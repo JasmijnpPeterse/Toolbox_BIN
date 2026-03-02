@@ -1,0 +1,30 @@
+body{
+    font-family: "Comic Neue Light", serif;
+    font-size: 20px;
+}
+.header{
+    background-color: #ffc6fd;
+    display: flex;
+}
+.link{
+    margin: 5px;
+    border: 1px dotted black;
+}
+img{
+    width: 300px;
+}
+.parent{
+    display: flex;
+    justify-content: center;
+    /*align-items: baseline;*/
+}
+.child {
+    border: 10px solid #ffc6fd;
+    width: 300px;
+    padding: 20px;
+    margin: 2px;
+    flex-grow: 1;
+}
+p{
+    font-weight: 900;
+}
