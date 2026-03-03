@@ -25,6 +25,94 @@ img{
     margin: 2px;
     flex-grow: 1;
 }
-p{
+.input_output{
     font-weight: 900;
+}
+.lucas_body{
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: #f4f7f9;
+        color: #333;
+        line-height: 1.6;
+    }
+
+header {
+    background-color: #ffc6fd;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+nav {
+    background-color: #ffc6fd;
+    padding: 10px;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+main {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+}
+
+section {
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+h2 {
+    color: #ffc6fd;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+table th, table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+}
+
+table th {
+    background-color: #e9ecef;
+}
+
+footer {
+    text-align: center;
+    padding: 15px;
+    background-color: #ffc6fd;
+    color: white;
+}
+footer section {
+    background-color: transparent;
+    box-shadow: none;
+}
+
+footer h2,
+footer p,
+footer li {
+    color: white;
+}
+
+footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
