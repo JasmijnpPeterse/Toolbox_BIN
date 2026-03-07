@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="stylesheet.css">
+        <title>Toolbox test</title>
+    </head>
+    <body>
+    <header>
+        <h1>Geautomatiseerde Nanopore Analyse</h1>
+        <p> Bio-informatica project – DNA variant detectie</p>
+
+    </header>
+    <div class="parent">
+         <div class="child">
+            <h1>Data input</h1>
+             <form>
+                 <p class="input_output">From what species is your data?</p>
+                 <select name="type_species">
+                     <option value="human">Human</option>
+                     <option value="mosquito">Mosquito</option>
+                     <option value="mouse">Mouse</option>
+                 </select>
+                 <br /><br />
+
+                 <p class="input_output">Add your datafile here:</p>
+                 <input type="file" name="data">
+                 <br /><br />
+
+                 <p class="input_output">What do you want as output?</p>
+
+                 <input type="checkbox" id="tabel_snps" value="tabel_snps">
+                 <label for="tabel_snps">A tabel with all the snp's </label><br>
+                 <input type="checkbox" id="mutations" value="mutations">
+                 <label for="mutations">A tabel with all the mutations and their locations,how much they apear and what type</label><br>
+                 <input type="checkbox" id="qualityscore" value="qualityscore">
+                 <label for="qualityscore">A figure with the quality score</label><br>
+                 <input type="checkbox" id="vcf_file" value="vcf_file">
+                 <label for="vcf_file">A vcf file with all the snp's and their data</label><br>
+
+                 <br><input type="submit" value="Submit">
+
+             </form>
+
+        </div>
+        <div class="child">
+            <h1>Data output</h1>
+
+                <p class="input_output">Hier komt de output</p>
+                <ul>
+                    <li>tabel met alle snp’s</li>
+                    <li>mogelijke mutaties (+locaties, hoe vaak voorkomt en welke basen)</li>
+                    <li>kwaliteitsscore (de kans dat er een verkeerde base in zit)</li>
+                    <li>een vcf file met de snips en de bijhorende data</li>
+                </ul>
+
+
+        </div>
+    </div>
+   <nav>
+        <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000001405.26/">human reference genome</a>
+        <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_002204515.2/">mosquito reference genome</a>
+        <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000001635.27/">Mouse reference genome</a>
+        <a href="lucas.html">Information page</a>
+   </nav>
+
+
+    </body>
+</html>
