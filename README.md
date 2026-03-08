@@ -29,6 +29,6 @@ Op de web pagina staan 3 linkjes naar NIH voor de referentie genomen, deze moete
 Nu dat u het referentie genoom op uw apparaat heeft staan, plaats het in dezelfde map als waar de tools staan. 
 Als de voorgaande stappen zijn gelukt kunt u naar de terminal gaan. Hier moet u het volgende argument in plaatsen om het referentie genoom te indexen:
 
-minimap2 -d naam_reference_genome nieuwe_naam_voor_document_met_index
+minimap2 -d naam_reference_genome.mmi nieuwe_naam_voor_document_met_index.fa
 
-Dit moet je doen doormiddel van Minimap2. Als u het referentie genoom 
+
