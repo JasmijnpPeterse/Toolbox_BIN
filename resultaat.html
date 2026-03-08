@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nanopore Analyse</title>
+        <link rel="stylesheet" href="stylesheet.css">
+</head>
+<body>
+    <header>
+            <h1>Geautomatiseerde Nanopore Analyse</h1>
+
+            <nav>
+                <ul>
+                    <a href="NANOSEQUENCING.html">Home</a>
+                    <a href="background_info.html">Tools</a>
+                    <a href="lucas.html">Information Page</a>
+                </ul>
+            </nav>
+        </header>
+
+    <h1>Het Resultaat</h1>
+    <p>Hieronder is het voorbeeld van het resultaat met de gedetecteerde mutaties en de bijhorende mapping data.</p>
+
+    <div class="resultaat">
+        <table>
+            <thead>
+            <tr>
+                <th>Positie</th>
+                <th>REF</th>
+                <th>ALT</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>(1000)</td>
+                <td class="base_ref">(A)</td>
+                <td class="base_alt">(T)</td>
+            </tr>
+            </tbody>
+            <tbody>
+            <tr>
+                <td>(2945)</td>
+                <td class="base_ref">(G)</td>
+                <td class="base_alt">(C)</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <fieldset>
+        <legend>Mapping Details</legend>
+        <p>Referentie Genoom: (homo_sapiens.fa)</p>
+        <p>Totaal aantal reads: (15.240)</p>
+        <p>Mapping kwaliteit: (42 Q)</p>
+    </fieldset>
+
+    <footer>
+        <p><small>Deze data is gegenereerd door SAMtools en BCFtools.</small></p>
+        <a href="NANOSEQUENCING.html"><button>Nieuwe Analyse Starten</button></a>
+    </footer>
+</body>
+</html>

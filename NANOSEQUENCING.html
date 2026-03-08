@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nanopore Analyse</title>
+        <link rel="stylesheet" href="stylesheet.css">
+</head>
+<body>
+    <header>
+        <h1>Geautomatiseerde Nanopore Analyse</h1>
+
+        <nav>
+            <ul>
+                <a href="NANOSEQUENCING.html">Home</a>
+                <a href="background_info.html">Tools</a>
+                <a href="lucas.html">Information Page</a>
+            </ul>
+        </nav>
+    </header>
+
+    <h1>Data Input</h1>
+
+    <form action="resultaat.html" method="POST" enctype="multipart/form-data">
+        <fieldset>
+            <legend>Bestand</legend>
+            <label for="bestand">Upload hier het FASTQ-bestand:</label>
+            <input type="file" id="bestand" name="fastq_bestand">
+        </fieldset>
+
+        <fieldset>
+            <legend>Instellingen</legend>
+            <input type="checkbox" id="minimap2_param_t" name="threads" value="4">
+            <label for="minimap2_param_t">Snelle analyse</label>
+                <br>
+            <input type="checkbox" id="minimap2_param_N" name="andere_plekken" value="10">
+            <label for="minimap2_param_N">Nauwkeurigheid bij dubbele genen</label>
+        </fieldset>
+
+        <fieldset>
+            <legend>Filtering</legend>
+            <label for="samtools_param_q">Betrouwbaarheid van de mapping:</label>
+            <select id="samtools_param_q" name="map_quality">
+                <option value="10">Standaard</option>
+                <option value="20">Streng</option>
+                <option value="30">Zeer streng</option>
+            </select>
+        </fieldset>
+
+        <fieldset>
+            <legend>Nauwkeurigheid</legend>
+            <label for="bcftools_param_p">Foutmarge:</label>
+            <select id="bcftools_param_p" name="nauwkeurigheid">
+                <option value="0.05">Standaard (5%)</option>
+                <option value="0.01">Klein (1%)</option>
+                <option value="0.001">Zeer klein (0,1%)</option>
+            </select>
+        </fieldset>
+
+        <br>
+        <a href="resultaat.html"><button>Run</button></a>
+    </form>
+</body>
+</html>
