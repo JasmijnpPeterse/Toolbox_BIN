@@ -117,3 +117,49 @@ footer ul {
     padding: 0;
     margin: 0;
 }
+
+
+.resultaat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    margin: 0 auto;
+}
+
+.resultaat table {
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+
+.resultaat th, .resultaat td {
+    text-align: center;
+}
+
+.base_ref {
+    color: green;
+    font-weight: bold;
+}
+
+.base_alt {
+    color: red;
+    font-weight: bold;
+}
+
+.vakken {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.tools {
+    background-color: white;
+    border: 5px solid #ffc6fd;
+    border-radius: 12px;
+    padding: 25px;
+    width: 300px;
+    flex: auto;
+    text-align: center;
+}
