@@ -13,30 +13,30 @@
     </header>
     <div class="parent">
          <div class="child">
-            <h1>Data input</h1>
+            <h1>input</h1>
              <form>
-                 <p class="input_output">From what species is your data?</p>
+                 <p class="input_output">Van welk organisme is uw referentie genoom?</p>
                  <select name="type_species">
-                     <option value="human">Human</option>
-                     <option value="mosquito">Mosquito</option>
-                     <option value="mouse">Mouse</option>
+                     <option value="human">Mens</option>
+                     <option value="mosquito">Mug</option>
+                     <option value="mouse">Muis</option>
                  </select>
                  <br /><br />
 
-                 <p class="input_output">Add your datafile here:</p>
+                 <p class="input_output">Voeg hier uw document toe:</p>
                  <input type="file" name="data">
                  <br /><br />
 
-                 <p class="input_output">What do you want as output?</p>
+                 <p class="input_output">Wat wilt u als resultaat?</p>
 
                  <input type="checkbox" id="tabel_snps" value="tabel_snps">
-                 <label for="tabel_snps">A tabel with all the snp's </label><br>
+                 <label for="tabel_snps">Een tabel met al de snp's </label><br>
                  <input type="checkbox" id="mutations" value="mutations">
-                 <label for="mutations">A tabel with all the mutations and their locations,how much they apear and what type</label><br>
+                 <label for="mutations">Een tabel met de mutaties, hun locaties en welk type</label><br>
                  <input type="checkbox" id="qualityscore" value="qualityscore">
-                 <label for="qualityscore">A figure with the quality score</label><br>
+                 <label for="qualityscore">Een kwaliteitsscore</label><br>
                  <input type="checkbox" id="vcf_file" value="vcf_file">
-                 <label for="vcf_file">A vcf file with all the snp's and their data</label><br>
+                 <label for="vcf_file">A vcf document met alle snp's en hun data</label><br>
 
                  <br><input type="submit" value="Submit">
 
@@ -44,17 +44,41 @@
 
         </div>
         <div class="child">
-            <h1>Data output</h1>
+            <h1>Het Resultaat</h1>
+            <p>Hieronder is het voorbeeld van het resultaat met de gedetecteerde mutaties en de bijhorende mapping data.</p>
 
-                <p class="input_output">Hier komt de output</p>
-                <ul>
-                    <li>tabel met alle snp’s</li>
-                    <li>mogelijke mutaties (+locaties, hoe vaak voorkomt en welke basen)</li>
-                    <li>kwaliteitsscore (de kans dat er een verkeerde base in zit)</li>
-                    <li>een vcf file met de snips en de bijhorende data</li>
-                </ul>
+            <div class="resultaat">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Positie</th>
+                        <th>REF</th>
+                        <th>ALT</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>(1000)</td>
+                        <td class="base_ref">(A)</td>
+                        <td class="base_alt">(T)</td>
+                    </tr>
+                    </tbody>
+                    <tbody>
+                    <tr>
+                        <td>(2945)</td>
+                        <td class="base_ref">(G)</td>
+                        <td class="base_alt">(C)</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
 
-
+            <fieldset>
+                <legend>Mapping Details</legend>
+                <p>Referentie Genoom: (homo_sapiens.fa)</p>
+                <p>Totaal aantal reads: (15.240)</p>
+                <p>Mapping kwaliteit: (42 Q)</p>
+            </fieldset>
         </div>
     </div>
    <nav>
