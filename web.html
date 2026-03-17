@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="stylesheet.css">
+        <title>Toolbox test</title>
+    </head>
+    <body>
+    <header>
+        <h1>Geautomatiseerde Nanopore Analyse</h1>
+        <p> Bio-informatica project – DNA variant detectie</p>
+
+    </header>
+    <nav>
+        <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000001405.26/">human reference genome</a>
+        <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_002204515.2/">mosquito reference genome</a>
+        <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000001635.27/">Mouse reference genome</a>
+        <a href="lucas.html">Information page</a>
+        <a href="background_info.html">Tools</a>
+   </nav>
+    <div class="parent">
+         <div class="child">
+            <h1>input</h1>
+             <form>
+                 <p class="input_output">Van welk organisme is uw referentie genoom?</p>
+                 <select name="type_species">
+                     <option value="human">Mens</option>
+                     <option value="mosquito">Mug</option>
+                     <option value="mouse">Muis</option>
+                 </select>
+                 <br><br>
+
+                 <p class="input_output">Voeg hier uw document toe:</p>
+                 <input type="file" name="data">
+                 <br><br>
+
+                 <p class="input_output">Wat wilt u als resultaat?</p>
+
+                 <input type="checkbox" id="tabel_snps" value="tabel_snps">
+                 <label for="tabel_snps">Een tabel met al de snp's </label><br>
+                 <input type="checkbox" id="mutations" value="mutations">
+                 <label for="mutations">Een tabel met de mutaties, hun locaties en welk type</label><br>
+                 <input type="checkbox" id="qualityscore" value="qualityscore">
+                 <label for="qualityscore">Een kwaliteitsscore</label><br>
+                 <input type="checkbox" id="vcf_file" value="vcf_file">
+                 <label for="vcf_file">A vcf document met alle snp's en hun data</label><br>
+
+                 <br><input type="submit" value="Submit">
+
+             </form>
+
+        </div>
+        <div class="child">
+            <h1>Het Resultaat</h1>
+            <p>Hieronder is het voorbeeld van het resultaat met de gedetecteerde mutaties en de bijhorende mapping data.</p>
+
+            <div class="resultaat">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Positie</th>
+                        <th>REF</th>
+                        <th>ALT</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>(1000)</td>
+                        <td class="base_ref">(A)</td>
+                        <td class="base_alt">(T)</td>
+                    </tr>
+                    </tbody>
+                    <tbody>
+                    <tr>
+                        <td>(2945)</td>
+                        <td class="base_ref">(G)</td>
+                        <td class="base_alt">(C)</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <fieldset>
+                <legend>Mapping Details</legend>
+                <p>Referentie Genoom: (homo_sapiens.fa)</p>
+                <p>Totaal aantal reads: (15.240)</p>
+                <p>Mapping kwaliteit: (42 Q)</p>
+            </fieldset>
+        </div>
+    </div>
+
+
+    </body>
+</html>
