@@ -118,42 +118,20 @@
 
     <p>Bio-informatica project – Nanopore sequencing</p>
 
-    <!-- NIEUW EMAIL UPDATE GEDEELTE -->
     <div class="email_update">
+        <input type="checkbox" id="emailToggle" style="display:none;">
 
-        <p onclick="toonEmailVeld()" style="cursor:pointer; color:white; text-decoration:underline;">
+        <label for="emailToggle" style="cursor:pointer; color:white; text-decoration:underline;">
             Klik hier om op de hoogte te blijven van updates
-        </p>
+        </label>
 
-        <div id="emailForm" style="display:none; margin-top:10px;">
-
+        <div id="emailForm">
             <p>Voer hier je email in om bericht te worden over updates!</p>
-
             <input type="email" placeholder="jouw@email.com">
             <button>Aanmelden</button>
-
         </div>
-
     </div>
 
 </footer>
-
-<script>
-
-function toonEmailVeld() {
-
-    var form = document.getElementById("emailForm");
-
-    if (form.style.display === "none") {
-        form.style.display = "block";
-    } 
-    else {
-        form.style.display = "none";
-    }
-
-}
-
-</script>
-
 </body>
 </html>
