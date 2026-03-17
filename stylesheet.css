@@ -30,11 +30,11 @@ img{
 }
 
 .lucas_body{
-        margin: 0;
-        background-color: #f4f7f9;
-        color: #333;
-        line-height: 1.6;
-    }
+    margin: 0;
+    background-color: #f4f7f9;
+    color: #333;
+    line-height: 1.6;
+}
 
 header {
     background-color: #0d2dff;
@@ -155,6 +155,15 @@ footer ul {
     flex-wrap: wrap;
 }
 
+/* Add this to stylesheet.css */
+#emailForm {
+    display: none;
+}
+
+#emailToggle:checked ~ #emailForm {
+    display: block;
+}
+
 .tools {
     background-color: white;
     border: 5px solid #0d2dff;
@@ -163,4 +172,5 @@ footer ul {
     width: 300px;
     flex: auto;
     text-align: center;
+
 }
