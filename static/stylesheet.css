@@ -1,9 +1,9 @@
+
 body{
-    font-family: "Comic Neue Light", serif;
     font-size: 20px;
 }
 .header{
-    background-color: #ffc6fd;
+    background-color: #112193;
     display: flex;
 }
 .link{
@@ -19,7 +19,7 @@ img{
     /*align-items: baseline;*/
 }
 .child {
-    border: 10px solid #ffc6fd;
+    border: 10px solid  #112193;
     width: 300px;
     padding: 20px;
     margin: 2px;
@@ -31,21 +31,22 @@ img{
 
 .lucas_body{
         margin: 0;
-        font-family: Arial, Helvetica, sans-serif;
         background-color: #f4f7f9;
         color: #333;
         line-height: 1.6;
     }
 
 header {
-    background-color: #ffc6fd;
+    background-color:  #112193;
     color: white;
     padding: 20px;
     text-align: center;
 }
 
 nav {
-    background-color: #ffc6fd;
+    position: sticky;
+    top: 0;
+    background-color:  #112193;
     padding: 10px;
     text-align: center;
 }
@@ -76,7 +77,7 @@ section {
 }
 
 h2 {
-    color: #ffc6fd;
+    color:  #112193;
 }
 
 table {
@@ -98,7 +99,7 @@ table th {
 footer {
     text-align: center;
     padding: 15px;
-    background-color: #ffc6fd;
+    background-color: #112193;
     color: white;
 }
 footer section {
@@ -116,4 +117,50 @@ footer ul {
     list-style: none;
     padding: 0;
     margin: 0;
+}
+
+
+.resultaat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    margin: 0 auto;
+}
+
+.resultaat table {
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+
+.resultaat th, .resultaat td {
+    text-align: center;
+}
+
+.base_ref {
+    color: green;
+    font-weight: bold;
+}
+
+.base_alt {
+    color: red;
+    font-weight: bold;
+}
+
+.vakken {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.tools {
+    background-color: white;
+    border: 5px solid  #112193;
+    border-radius: 12px;
+    padding: 25px;
+    width: 300px;
+    flex: auto;
+    text-align: center;
 }
