@@ -44,6 +44,8 @@ header {
 }
 
 nav {
+    position: sticky;
+    top: 0;
     background-color: #0d2dff;
     padding: 10px;
     text-align: center;
