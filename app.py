@@ -15,6 +15,19 @@ def information_page():
 def background_info_page():
     return render_template('Toolbox_BIN/background_info.html')
 
+@app.route('/stylesheet.css')
+def stylesheet():
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'stylesheet.css')
+
+
+@app.route('/aanmelden', methods=['POST'])
+def aanmelden():
+    email = request.form.get('email')
+    if email:
+        with open('emails.txt', 'a') as f:
+            f.write(email + '\n')
+    return redirect(url_for('lucas'))
+
 @app.route('/web.html', methods=['GET', 'POST'])
 def output():
     if request.method == 'GET':
