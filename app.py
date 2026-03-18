@@ -28,7 +28,7 @@ def aanmelden():
             f.write(email + '\n')
     return redirect(url_for('lucas'))
 
-app.route('/web.html', methods=['GET', 'POST'])
+@app.route('/web.html', methods=['GET', 'POST'])
 def output():
     if request.method == 'GET':
         return render_template('web.html')
