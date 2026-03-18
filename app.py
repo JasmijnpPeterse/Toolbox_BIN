@@ -4,7 +4,6 @@ import os
 app = Flask(__name__)
 
 @app.route('/')
-@app.route('/web.html')
 def web():
     return render_template('web.html')
 
@@ -29,6 +28,24 @@ def aanmelden():
             f.write(email + '\n')
     return redirect(url_for('lucas'))
 
+app.route('/web.html', methods=['GET', 'POST'])
+def output():
+    if request.method == 'GET':
+        return render_template('web.html')
+    elif request.method == 'POST':
+        kwags = {
+            'tabel_snps': request.form.get('tabel_snps') is not None,
+            'tabel_mutaties': request.form.get('tabel_mutaties') is not None,
+            'kwaliteitscore': request.form.get('kwaliteitscore') is not None,
+            'vcf_doc': request.form.get('vcf_doc') is not None
+        }
+        return render_template('web.html', **kwags)
 
+    return render_template('web.html',
+        tabel_snps=False,
+        tabel_mutaties=False,
+        kwaliteitscore=False,
+        vcf_doc=False
+    )
 if __name__ == '__main__':
     app.run(debug=True)
