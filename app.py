@@ -1,19 +1,19 @@
-from flask import Flask, render_template, send_from_directory, request, redirect, url_for
+from flask import Flask,send_from_directory,redirect, url_for, render_template_string, render_template, request, session
 import os
 
 app = Flask(__name__)
 
 @app.route('/')
-def web():
+def open_page():
     return render_template('web.html')
 
 @app.route('/lucas.html')
-def lucas():
+def information_page():
     return render_template('lucas.html')
 
 @app.route('/background_info.html')
-def background_info():
-    return render_template('background_info.html')
+def background_info_page():
+    return render_template('Toolbox_BIN/background_info.html')
 
 @app.route('/stylesheet.css')
 def stylesheet():
@@ -78,5 +78,6 @@ def index():
 
 
     return render_template('web.html', uitslag=uitslag, show_results=show_results)
+
 if __name__ == '__main__':
     app.run(debug=True)

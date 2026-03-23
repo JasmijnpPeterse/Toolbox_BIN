@@ -21,30 +21,31 @@
     <div class="parent">
          <div class="child">
             <h1>input</h1>
-             <form action="/Toolbox_BIN/static" method="POST" enctype="multipart/form-data">
+             <form action="/Toolbox_BIN/static" method="POST">
                  <p class="input_output">Voeg hier uw document toe:</p>
                  <input type="file" name="data">
                  <br><br>
 
                  <p class="input_output">Wat wilt u als resultaat?</p>
 
-                 <input type="checkbox" name="tabel_snps" id="tabel_snps" value="yes">
+                 <input type="checkbox" id="tabel_snps" value="tabel_snps">
                  <label for="tabel_snps">Een tabel met al de snp's </label><br>
-                 <input type="checkbox" name="mutations" id="mutations" value="yes">
+                 <input type="checkbox" id="mutations" value="mutations">
                  <label for="mutations">Een tabel met de mutaties, hun locaties en welk type</label><br>
-                 <input type="checkbox" name="qualityscore" id="qualityscore" value="yes">
+                 <input type="checkbox" id="qualityscore" value="qualityscore">
                  <label for="qualityscore">Een kwaliteitsscore</label><br>
-                 <input type="checkbox" name="vcf_file" id="vcf_file" value="yes">
+                 <input type="checkbox" id="vcf_file" value="vcf_file">
                  <label for="vcf_file">A vcf document met alle snp's en hun data</label><br>
 
-                <br>
+                 <br>
                 <button type="submit" class="button btn_submit">Start Analyse</button>
 
              </form>
-         </div>
 
-        <div class="child">
-            <h1>Het Resultaat</h1>
+        </div>
+                   <div class="child">
+                <h1>Het Resultaat</h1>
+                <p>Hieronder is het voorbeeld van het resultaat met de gedetecteerde mutaties en de bijhorende mapping data.</p>
 
             {% if not show_results %}
                 <p>Upload een bestand en druk op submit om de analyse te starten.</p>
@@ -53,6 +54,8 @@
                 <p>Bestand: {{ uitslag.filename }}</p>
 
                 <div class="resultaat">
+
+                {% if tabel_snps %}
                     <table>
                         <thead>
                             <tr>
@@ -74,34 +77,39 @@
                             </tr>
                         </tbody>
                     </table>
+                {% endif %}
+
+                {% if tabel_mutaties %}
+                    <p>Mutaties tabel hier...</p>
+                {% endif %}
+
+                {% if kwaliteitscore %}
+                    <p>Kwaliteitsscore: 42 Q</p>
+                {% endif %}
+
+                {% if vcf_doc %}
+                    <p>Download VCF bestand...</p>
+                {% endif %}
                 </div>
-
-                <fieldset>
-                    <legend>Mapping Details</legend>
-                    <p>Referentie Genoom: (homo_sapiens.fasta)</p>
-                    <p>Totaal aantal reads: (15.240)</p>
-                    <p>Mapping methode: Minimap 2 (map-ont)</p>
-                </fieldset>
-
-                <br>
-                <a href="{{ url_for('reset') }}" class="button btn_reset">Nieuwe Analyse</a>
-            {% endif %}
+            </div>
         </div>
-    </div>
 
-<footer>
-    <div id="makers">
-        <h2>Makers</h2>
-        <p>Deze website en analyse-pipeline zijn ontwikkeld door:</p>
-        <ul>
-            <li>Lucas</li>
-            <li>Jasmijn</li>
-            <li>Vani</li>
-        </ul>
-    </div>
+        <footer>
+            <div class="makers">
+                <h2>Makers</h2>
+                <p>Deze website en analyse-pipeline zijn ontwikkeld door:</p>
 
-    <p>Bio-informatica project – Nanopore sequencing</p>
-</footer>
+                <p>Lucas Bos</p>
+                <p>Jasmijn Peterse</p>
+                <p>Vani</p>
+            </div>
 
+            <ul>
+                <li>l.bos.5@st.hanze.nl</li>
+                <li>jrj.peterse@st.hanze.nl</li>
+                <li>email vani</li>
+            </ul>
+            <p>Dio-informatica project - Nanapore sequencing</p>
+        </footer>
     </body>
 </html>
