@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
     <head>
         <meta charset="UTF-8">
-        <link rel="stylesheet" type="text/css" href="stylesheet.css">
-        <title>Toolbox test</title>
+        <link rel="stylesheet" href="{{url_for('static', filename='stylesheet.css')}}">
+        <title>Bio-informatica Pipeline | Nanopore Analyse</title>
     </head>
     <body>
     <header>
@@ -12,40 +12,33 @@
 
     </header>
     <nav>
-        <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000001405.26/">human reference genome</a>
-        <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_002204515.2/">mosquito reference genome</a>
-        <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000001635.27/">Mouse reference genome</a>
-        <a href="lucas.html">Information page</a>
-        <a href="background_info.html">Tools</a>
-   </nav>
+        <a href="{{ url_for('about') }}">About</a>
+        <a href="{{ url_for('tools') }}">Tools</a>
+        <a href="{{ url_for('onderzoek') }}">Onderzoeksvragen</a>
+        <a href="{{ url_for('reference') }}">Reference genomen</a><br><br>
+    </nav>
+
     <div class="parent">
          <div class="child">
             <h1>input</h1>
-             <form>
-                 <p class="input_output">Van welk organisme is uw referentie genoom?</p>
-                 <select name="type_species">
-                     <option value="human">Mens</option>
-                     <option value="mosquito">Mug</option>
-                     <option value="mouse">Muis</option>
-                 </select>
-                 <br><br>
-
+             <form action="/Toolbox_BIN/static" method="POST">
                  <p class="input_output">Voeg hier uw document toe:</p>
                  <input type="file" name="data">
                  <br><br>
 
                  <p class="input_output">Wat wilt u als resultaat?</p>
 
-                 <input type="checkbox" id="tabel_snps" value="tabel_snps">
+                 <input name="tabel_snps" type="checkbox" id="tabel_snps" value="tabel_snps">
                  <label for="tabel_snps">Een tabel met al de snp's </label><br>
-                 <input type="checkbox" id="mutations" value="mutations">
+                 <input name="tabel_mutaties" type="checkbox" id="mutations" value="mutations">
                  <label for="mutations">Een tabel met de mutaties, hun locaties en welk type</label><br>
-                 <input type="checkbox" id="qualityscore" value="qualityscore">
+                 <input name="kwaliteitscore"   type="checkbox" id="qualityscore" value="qualityscore">
                  <label for="qualityscore">Een kwaliteitsscore</label><br>
-                 <input type="checkbox" id="vcf_file" value="vcf_file">
+                 <input name="vcf_doc" type="checkbox" id="vcf_file" value="vcf_file">
                  <label for="vcf_file">A vcf document met alle snp's en hun data</label><br>
 
-                 <br><input type="submit" value="Submit">
+                 <br>
+                <button type="submit" class="button btn_submit">Start Analyse</button>
 
              </form>
 
@@ -53,6 +46,12 @@
                    <div class="child">
                 <h1>Het Resultaat</h1>
                 <p>Hieronder is het voorbeeld van het resultaat met de gedetecteerde mutaties en de bijhorende mapping data.</p>
+
+            {% if not show_results %}
+                <p>Upload een bestand en druk op submit om de analyse te starten.</p>
+            {% else %}
+                <p>Status: <strong>{{ uitslag.status }}</strong></p>
+                <p>Bestand: {{ uitslag.filename }}</p>
 
                 <div class="resultaat">
 
@@ -68,8 +67,13 @@
                         <tbody>
                             <tr>
                                 <td>(1000)</td>
-                                <td>(A)</td>
-                                <td>(T)</td>
+                                <td class="base_ref">(A)</td>
+                                <td class="base_alt">(T)</td>
+                            </tr>
+                            <tr>
+                                <td>(2945)</td>
+                                <td class="base_ref">(G)</td>
+                                <td class="base_alt">(C)</td>
                             </tr>
                         </tbody>
                     </table>
@@ -107,26 +111,5 @@
             </ul>
             <p>Dio-informatica project - Nanapore sequencing</p>
         </footer>
-    </body>
-</html>
-    </div>
-    <footer>
-        <div class="makers">
-            <h2>Makers</h2>
-            <p>Deze website en analyse-pipeline zijn ontwikkeld door:</p>
-
-            <p>Lucas Bos</p>
-            <p>Jasmijn Peterse</p>
-            <p>Vani</p>
-        </div>
-
-        <ul>
-            <li>l.bos.5@st.hanze.nl</li>
-            <li>jrj.peterse@st.hanze.nl</li>
-            <li>email vani</li>
-        </ul>
-        <p>Dio-informatica project - Nanapore sequencing</p>
-    </footer>
-
     </body>
 </html>

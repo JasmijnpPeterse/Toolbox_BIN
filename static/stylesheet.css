@@ -1,5 +1,5 @@
+
 body{
-    font-family: "Comic Neue Light", serif;
     font-size: 20px;
 }
 .header{
@@ -155,51 +155,6 @@ footer ul {
     flex-wrap: wrap;
 }
 
-.tools {
-    background-color: white;
-    border: 5px solid  #112193;
-    border-radius: 12px;
-    padding: 25px;
-    width: 300px;
-    flex: auto;
-    text-align: center;
-}
-
-.resultaat {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: auto;
-    margin: 0 auto;
-}
-
-.resultaat table {
-    margin-left: auto;
-    margin-right: auto;
-    width: 80%;
-}
-
-.resultaat th, .resultaat td {
-    text-align: center;
-}
-
-.base_ref {
-    color: green;
-    font-weight: bold;
-}
-
-.base_alt {
-    color: red;
-    font-weight: bold;
-}
-
-.vakken {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
 /* Add this to stylesheet.css */
 #emailForm {
     display: none;
@@ -217,5 +172,31 @@ footer ul {
     width: 300px;
     flex: auto;
     text-align: center;
+}
 
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+    font-family: inherit;
+}
+
+.btn_submit {
+    background-color: green;
+}
+
+.btn_reset {
+    background-color: orangered;
+}
+
+/* Effect als je eroverheen gaat */
+.btn_submit:hover, .btn_reset:hover {
+    filter: brightness(90%);
 }
