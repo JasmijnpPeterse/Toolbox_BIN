@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
     <head>
         <meta charset="UTF-8">
-        <link rel="stylesheet" type="text/css" href="stylesheet.css">
-        <title>Toolbox test</title>
+        <link rel="stylesheet" href="{{url_for('static', filename='stylesheet.css')}}">
+        <title>Bio-informatica Pipeline | Nanopore Analyse</title>
     </head>
     <body>
     <header>
@@ -12,24 +12,16 @@
 
     </header>
     <nav>
-        <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000001405.26/">human reference genome</a>
-        <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_002204515.2/">mosquito reference genome</a>
-        <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000001635.27/">Mouse reference genome</a>
-        <a href="lucas.html">Information page</a>
-        <a href="background_info.html">Tools</a>
-   </nav>
+        <a href="{{ url_for('about') }}">About</a>
+        <a href="{{ url_for('tools') }}">Tools</a>
+        <a href="{{ url_for('onderzoek') }}">Onderzoeksvragen</a>
+        <a href="{{ url_for('reference') }}">Reference genomen</a><br><br>
+    </nav>
+
     <div class="parent">
          <div class="child">
             <h1>input</h1>
-             <form>
-                 <p class="input_output">Van welk organisme is uw referentie genoom?</p>
-                 <select name="type_species">
-                     <option value="human">Mens</option>
-                     <option value="mosquito">Mug</option>
-                     <option value="mouse">Muis</option>
-                 </select>
-                 <br><br>
-
+             <form action="/Toolbox_BIN/static" method="POST">
                  <p class="input_output">Voeg hier uw document toe:</p>
                  <input type="file" name="data">
                  <br><br>
@@ -45,7 +37,8 @@
                  <input name="vcf_doc" type="checkbox" id="vcf_file" value="vcf_file">
                  <label for="vcf_file">A vcf document met alle snp's en hun data</label><br>
 
-                 <br><input type="submit" value="Submit">
+                 <br>
+                <button type="submit" class="button btn_submit">Start Analyse</button>
 
              </form>
 
