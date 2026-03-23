@@ -2,55 +2,55 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <link rel="stylesheet" type="text/css" href="../static/stylesheet.css">
+        <link rel="stylesheet" type="text/css" href="stylesheet.css">
         <title>Toolbox test</title>
     </head>
     <body>
-        <header>
-            <h1>Geautomatiseerde Nanopore Analyse</h1>
-            <p> Bio-informatica project – DNA variant detectie</p>
+    <header>
+        <h1>Geautomatiseerde Nanopore Analyse</h1>
+        <p> Bio-informatica project – DNA variant detectie</p>
 
-        </header>
-        <nav>
-            <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000001405.26/">human reference genome</a>
-            <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_002204515.2/">mosquito reference genome</a>
-            <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000001635.27/">Mouse reference genome</a>
-            <a href="lucas.html">Information page</a>
-            <a href="background_info.html">Tools</a>
-       </nav>
-        <div class="parent">
-             <div class="child">
-                <h1>input</h1>
-                 <form method="post" action="/web.html">
-                     <p class="input_output">Van welk organisme is uw referentie genoom?</p>
-                     <select name="type_species">
-                         <option value="human">Mens</option>
-                         <option value="mosquito">Mug</option>
-                         <option value="mouse">Muis</option>
-                     </select>
-                     <br><br>
+    </header>
+    <nav>
+        <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000001405.26/">human reference genome</a>
+        <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_002204515.2/">mosquito reference genome</a>
+        <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000001635.27/">Mouse reference genome</a>
+        <a href="lucas.html">Information page</a>
+        <a href="background_info.html">Tools</a>
+   </nav>
+    <div class="parent">
+         <div class="child">
+            <h1>input</h1>
+             <form>
+                 <p class="input_output">Van welk organisme is uw referentie genoom?</p>
+                 <select name="type_species">
+                     <option value="human">Mens</option>
+                     <option value="mosquito">Mug</option>
+                     <option value="mouse">Muis</option>
+                 </select>
+                 <br><br>
 
-                     <p class="input_output">Voeg hier uw document toe:</p>
-                     <input type="file" name="data">
-                     <br><br>
+                 <p class="input_output">Voeg hier uw document toe:</p>
+                 <input type="file" name="data">
+                 <br><br>
 
-                     <p class="input_output">Wat wilt u als resultaat?</p>
+                 <p class="input_output">Wat wilt u als resultaat?</p>
 
-                     <input name="tabel_snps" type="checkbox" id="tabel_snps" value="tabel_snps">
-                     <label for="tabel_snps">Een tabel met al de snp's </label><br>
-                     <input name="tabel_mutaties" type="checkbox" id="mutaties" value="mutaties">
-                     <label for="mutaties">Een tabel met de mutaties, hun locaties en welk type</label><br>
-                     <input name="kwaliteitscore" type="checkbox" id="kwaliteitscore" value="kwaliteitscore">
-                     <label for="kwaliteitscore">Een kwaliteitsscore</label><br>
-                     <input name="vcf_doc" type="checkbox" id="vcf_doc" value="vcf_doc">
-                     <label for="vcf_doc">A vcf document met alle snp's en hun data</label><br>
+                 <input type="checkbox" id="tabel_snps" value="tabel_snps">
+                 <label for="tabel_snps">Een tabel met al de snp's </label><br>
+                 <input type="checkbox" id="mutations" value="mutations">
+                 <label for="mutations">Een tabel met de mutaties, hun locaties en welk type</label><br>
+                 <input type="checkbox" id="qualityscore" value="qualityscore">
+                 <label for="qualityscore">Een kwaliteitsscore</label><br>
+                 <input type="checkbox" id="vcf_file" value="vcf_file">
+                 <label for="vcf_file">A vcf document met alle snp's en hun data</label><br>
 
-                     <br><input type="submit" value="Submit">
+                 <br><input type="submit" value="Submit">
 
-                 </form>
+             </form>
 
-            </div>
-            <div class="child">
+        </div>
+                   <div class="child">
                 <h1>Het Resultaat</h1>
                 <p>Hieronder is het voorbeeld van het resultaat met de gedetecteerde mutaties en de bijhorende mapping data.</p>
 
@@ -107,5 +107,26 @@
             </ul>
             <p>Dio-informatica project - Nanapore sequencing</p>
         </footer>
+    </body>
+</html>
+    </div>
+    <footer>
+        <div class="makers">
+            <h2>Makers</h2>
+            <p>Deze website en analyse-pipeline zijn ontwikkeld door:</p>
+
+            <p>Lucas Bos</p>
+            <p>Jasmijn Peterse</p>
+            <p>Vani</p>
+        </div>
+
+        <ul>
+            <li>l.bos.5@st.hanze.nl</li>
+            <li>jrj.peterse@st.hanze.nl</li>
+            <li>email vani</li>
+        </ul>
+        <p>Dio-informatica project - Nanapore sequencing</p>
+    </footer>
+
     </body>
 </html>
