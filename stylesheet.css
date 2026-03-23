@@ -1,9 +1,8 @@
 body{
-    font-family: "Comic Neue Light", serif;
     font-size: 20px;
 }
 .header{
-    background-color: #ffc6fd;
+    background-color: #0d2dff;
     display: flex;
 }
 .link{
@@ -19,7 +18,7 @@ img{
     /*align-items: baseline;*/
 }
 .child {
-    border: 10px solid #ffc6fd;
+    border: 10px solid #0d2dff;
     width: 300px;
     padding: 20px;
     margin: 2px;
@@ -31,21 +30,22 @@ img{
 
 .lucas_body{
         margin: 0;
-        font-family: Arial, Helvetica, sans-serif;
         background-color: #f4f7f9;
         color: #333;
         line-height: 1.6;
     }
 
 header {
-    background-color: #ffc6fd;
+    background-color: #0d2dff;
     color: white;
     padding: 20px;
     text-align: center;
 }
 
 nav {
-    background-color: #ffc6fd;
+    position: sticky;
+    top: 0;
+    background-color: #0d2dff;
     padding: 10px;
     text-align: center;
 }
@@ -76,7 +76,7 @@ section {
 }
 
 h2 {
-    color: #ffc6fd;
+    color: #0d2dff;
 }
 
 table {
@@ -98,7 +98,7 @@ table th {
 footer {
     text-align: center;
     padding: 15px;
-    background-color: #ffc6fd;
+    background-color: #0d2dff;
     color: white;
 }
 footer section {
@@ -153,9 +153,18 @@ footer ul {
     flex-wrap: wrap;
 }
 
+/* Add this to stylesheet.css */
+#emailForm {
+    display: none;
+}
+
+#emailToggle:checked ~ #emailForm {
+    display: block;
+}
+
 .tools {
     background-color: white;
-    border: 5px solid #ffc6fd;
+    border: 5px solid #0d2dff;
     border-radius: 12px;
     padding: 25px;
     width: 300px;
