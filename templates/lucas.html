@@ -1,26 +1,5 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="../static/stylesheet.css">
-    <title>Bio-informatica Pipeline | Nanopore Analyse</title>
-</head>
-
-<body class="lucas_body">
-
-<header>
-    <h1>Geautomatiseerde Nanopore Analyse</h1>
-    <p>Bio-informatica project – DNA variant detectie</p>
-</header>
-
-    <nav>
-        <a href="#intro">Introductie</a>
-        <a href="#tools">Tools</a>
-        <a href="#resultaten">Resultaten</a>
-        <a href="#onderzoek">Onderzoeksvragen</a>
-        <a href="#makers">Makers</a><br><br>
-        <a href="../web.html">Back to input/output page</a>
-    </nav>`
+{% extends "header.html" %}
+{% block content %}
 
     <main>
     <section id="intro">
@@ -77,36 +56,4 @@
     </section>
     </main>
 
-    <footer>
-
-        <div id="makers">
-            <h2>Makers</h2>
-            <p>Deze website en analyse-pipeline zijn ontwikkeld door:</p>
-            <ul>
-                <li>Lucas</li>
-                <li>Jasmijn</li>
-                <li>Vani</li>
-            </ul>
-        </div>
-
-        <p>Bio-informatica project – Nanopore sequencing</p>
-
-        <div class="email_update">
-            <input type="checkbox" id="emailToggle" style="display:none;">
-
-            <label for="emailToggle" style="cursor:pointer; color:white; text-decoration:underline;">
-                Klik hier om op de hoogte te blijven van updates
-            </label>
-
-            <div id="emailForm">
-                <p>Voer hier je email in om bericht te worden over updates!</p>
-                <form action="/aanmelden" method="POST">
-                    <input type="email" name="email" placeholder="jouw@email.com">
-                    <button type="submit">Aanmelden</button>
-                </form>
-            </div>
-        </div>
-
-    </footer>
-</body>
-</html>
+{% endblock %}

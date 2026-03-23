@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="nl">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="{{url_for('static', filename='stylesheet.css')}}">
+        <title>Bio-informatica Pipeline | Nanopore Analyse</title>
+    </head>
+    <body>
+    <header>
+        <h1>Geautomatiseerde Nanopore Analyse</h1>
+        <p> Bio-informatica project – DNA variant detectie</p>
+
+    </header>
+    <nav>
+        <a href="{{ url_for('information_page') }}">Informatie</a>
+        <a href="{{ url_for('tools_info_page') }}">Tools</a>
+        <a href="{{ url_for('reference_gen_page') }}">Referentie genomen</a>
+        <a href="{{ url_for('input_output_page') }}">Analyse pagina</a><br><br>
+    </nav>
+
+     {% block content %}
+     {% endblock %}
+
+    <footer>
+        <div class="makers">
+            <h2>Makers</h2>
+            <p>Deze website en analyse-pipeline zijn ontwikkeld door:</p>
+
+            <p>Lucas Bos</p>
+            <p>Jasmijn Peterse</p>
+            <p>Vani Rembet</p>
+        </div>
+
+        <ul>
+            <li>l.bos.5@st.hanze.nl</li>
+            <li>jrj.peterse@st.hanze.nl</li>
+            <li>adventa.christophany.rembet@st.hanze.nl</li>
+        </ul>
+        <p>Dio-informatica project - Nanapore sequencing</p>
+    </footer>
+
+    </body>
+</html>

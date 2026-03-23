@@ -4,7 +4,7 @@ import os
 app = Flask(__name__)
 
 @app.route('/')
-def open_page():
+def input_output_page():
     return render_template('web.html')
 
 @app.route('/lucas.html')
@@ -12,8 +12,12 @@ def information_page():
     return render_template('lucas.html')
 
 @app.route('/background_info.html')
-def background_info_page():
-    return render_template('Toolbox_BIN/background_info.html')
+def tools_info_page():
+    return render_template('background_info.html')
+
+@app.route('/reference.html')
+def reference_gen_page():
+    return render_template('reference.html')
 
 @app.route('/stylesheet.css')
 def stylesheet():
