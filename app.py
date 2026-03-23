@@ -47,5 +47,36 @@ def output():
         kwaliteitscore=False,
         vcf_doc=False
     )
+
+@app.route("/", methods=["GET", "POST"])
+def index():
+    # Haal data op
+    uitslag = session.get("uitslag")
+    show_results = session.get("show_results", False)
+
+    if request.method == "POST":
+        # Nieuwe input file
+        file = request.files.get('data')
+        if file and file.filename != "":
+            filename = file.filename
+            file.save(os.path.join(upload_folder, filename))
+
+            # Sla het resultaat altijd op (tijdelijk resultaat)
+            session["uitslag"] = {
+                "filename": filename,
+                "status": "Analyse voltooid!"
+            }
+            session["show_results"] = True
+
+            # Update de upload map
+            uitslag = session["uitslag"]
+            show_results = True
+
+        else:
+            session["uitslag"] = {"status": "FOUT: Geen bestand geselecteerd"}
+            session["show_results"] = False
+
+
+    return render_template('web.html', uitslag=uitslag, show_results=show_results)
 if __name__ == '__main__':
     app.run(debug=True)
