@@ -50,54 +50,76 @@
              </form>
 
         </div>
-        <div class="child">
-            <h1>Het Resultaat</h1>
-            <p>Hieronder is het voorbeeld van het resultaat met de gedetecteerde mutaties en de bijhorende mapping data.</p>
+                   <div class="child">
+                <h1>Het Resultaat</h1>
+                <p>Hieronder is het voorbeeld van het resultaat met de gedetecteerde mutaties en de bijhorende mapping data.</p>
 
-            <div class="resultaat">
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Positie</th>
-                        <th>REF</th>
-                        <th>ALT</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>(1000)</td>
-                        <td class="base_ref">(A)</td>
-                        <td class="base_alt">(T)</td>
-                    </tr>
-                    </tbody>
-                    <tbody>
-                    <tr>
-                        <td>(2945)</td>
-                        <td class="base_ref">(G)</td>
-                        <td class="base_alt">(C)</td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div class="resultaat">
+
+                {% if tabel_snps %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Positie</th>
+                                <th>REF</th>
+                                <th>ALT</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>(1000)</td>
+                                <td>(A)</td>
+                                <td>(T)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                {% endif %}
+
+                {% if tabel_mutaties %}
+                    <p>Mutaties tabel hier...</p>
+                {% endif %}
+
+                {% if kwaliteitscore %}
+                    <p>Kwaliteitsscore: 42 Q</p>
+                {% endif %}
+
+                {% if vcf_doc %}
+                    <p>Download VCF bestand...</p>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="makers">
+                <h2>Makers</h2>
+                <p>Deze website en analyse-pipeline zijn ontwikkeld door:</p>
+
+                <p>Lucas Bos</p>
+                <p>Jasmijn Peterse</p>
+                <p>Vani</p>
             </div>
 
-            <fieldset>
-                <legend>Mapping Details</legend>
-                <p>Referentie Genoom: (homo_sapiens.fa)</p>
-                <p>Totaal aantal reads: (15.240)</p>
-                <p>Mapping kwaliteit: (42 Q)</p>
-            </fieldset>
-        </div>
+            <ul>
+                <li>l.bos.5@st.hanze.nl</li>
+                <li>jrj.peterse@st.hanze.nl</li>
+                <li>email vani</li>
+            </ul>
+            <p>Dio-informatica project - Nanapore sequencing</p>
+        </footer>
+    </body>
+</html>
     </div>
     <footer>
         <div class="makers">
             <h2>Makers</h2>
             <p>Deze website en analyse-pipeline zijn ontwikkeld door:</p>
-            
+
             <p>Lucas Bos</p>
             <p>Jasmijn Peterse</p>
             <p>Vani</p>
         </div>
-        
+
         <ul>
             <li>l.bos.5@st.hanze.nl</li>
             <li>jrj.peterse@st.hanze.nl</li>
