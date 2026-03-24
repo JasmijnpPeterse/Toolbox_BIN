@@ -33,8 +33,15 @@ def main(kwargs):
         shell=True
     )
 
+    mpileup_cmd = f"bcftools mpileup sorted_output.bam -f {kwargs['reference']}"
+
+    if kwargs.get("region"):
+        mpileup_cmd += f" -r {kwargs['region']}"
+
+    mpileup_cmd += " > bcftools_mpileup.bcf"
+
     subprocess.run(
-        f"bcftools mpileup sorted_output.bam -f {kwargs['reference']} > bcftools_mpileup.bcf",
+        mpileup_cmd,
         shell=True
     )
 
