@@ -2,6 +2,7 @@ from flask import Flask,send_from_directory,redirect, url_for, render_template_s
 import os
 
 app = Flask(__name__)
+app.secret_key = "BINNANPORE"
 
 @app.route('/')
 def input_output_page():
@@ -32,6 +33,7 @@ def aanmelden():
             f.write(email + '\n')
     return redirect(url_for('lucas'))
 
+
 @app.route('/web.html', methods=['GET', 'POST'])
 def output():
     if request.method == 'GET':
@@ -52,6 +54,9 @@ def output():
         vcf_doc=False
     )
 
+upload_folder = ('Uploads')
+os.makedirs(upload_folder, exist_ok=True)
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     # Haal data op
@@ -64,24 +69,17 @@ def index():
         if file and file.filename != "":
             filename = file.filename
             file.save(os.path.join(upload_folder, filename))
-
-            # Sla het resultaat altijd op (tijdelijk resultaat)
             session["uitslag"] = {
-                "filename": filename,
-                "status": "Analyse voltooid!"
+                "status": f"Bestand '{filename}' succesvol geüpload"
             }
             session["show_results"] = True
-
-            # Update de upload map
-            uitslag = session["uitslag"]
-            show_results = True
 
         else:
             session["uitslag"] = {"status": "FOUT: Geen bestand geselecteerd"}
             session["show_results"] = False
 
 
-    return render_template('web.html', uitslag=uitslag, show_results=show_results)
+    return render_template('test.html', uitslag=uitslag, show_results=show_results)
 
 if __name__ == '__main__':
     app.run(debug=True)
