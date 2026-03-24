@@ -1,61 +1,59 @@
 import subprocess
-import sys
+import time
+
+class Tools():
+    pass
 
 
-def run(cmd, stap):
-    try:
-        subprocess.run(cmd, check=True)
-    except subprocess.CalledProcessError as e:
-        sys.exit(f"Analyse gefaald (exitcode {e.returncode}) tijdens: {stap}")
+def main(kwargs):
+    print(kwargs)
+    print(kwargs["threads"])
+    print(kwargs["fastq_bestand"])
+    time.sleep(1)
 
-
-def minimap2(input_file):
-    print("Stap 1: minimap2 alignment...")
-    with open("output.sam", "w") as sam_file:
-        subprocess.run(
-            ["minimap2", "-a", "-x", "map-ont", "-t", "8", "-N", "5", "referentie.fa", input_file],
-            check=True, stdout=sam_file
-        )
-
-
-def samtools_sort():
-    print("Stap 2: samtools sort...")
-    run(["samtools", "sort", "-o", "output.bam", "output.sam"], "samtools sort")
-
-
-def samtools_index():
-    print("Stap 3: samtools index...")
-    run(["samtools", "index", "output.bam"], "samtools index")
-
-
-def bcftools():
-    print("Stap 4: bcftools variant calling...")
-    mpileup = subprocess.Popen(
-        ["bcftools", "mpileup", "-Ou", "-f", "referentie.fa", "output.bam"],
-        stdout=subprocess.PIPE
-    )
-    call = subprocess.Popen(
-        ["bcftools", "call", "-mv", "-Oz", "-o", "output.vcf.gz"],
-        stdin=mpileup.stdout
-    )
-    mpileup.stdout.close()
-    call.communicate()
-
-    print("Stap 5: bcftools filter...")
-    run(
-        ["bcftools", "filter", "-i", "QUAL > 30 && DP > 10", "output.vcf.gz", "-Oz", "-o", "gefilterd.vcf.gz"],
-        "bcftools filter"
+    subprocess.run(
+        f"minimap2 -a -x map-ont -t {kwargs['threads']} -N {kwargs['N']} {kwargs['reference']} {kwargs['fastq_bestand']} > output.sam",
+        shell=True
     )
 
-def main():
-    if len(sys.argv) < 2:
-        sys.exit("Gebruik: python pipeline.py <input.fastq>")
+    print("Minimap2")
 
-    minimap2(sys.argv[1])
-    samtools_sort()
-    samtools_index()
-    bcftools()
+    subprocess.run(
+        "samtools view -b -o output.bam output.sam",
+        shell=True
+    )
 
-    print("Klaar! Resultaat opgeslagen in: gefilterd.vcf.gz")
+    subprocess.run(
+        "samtools sort output.bam > sorted_output.bam",
+        shell=True
+    )
 
-main()
+    subprocess.run(
+        "samtools index sorted_output.bam",
+        shell=True
+    )
+
+    subprocess.run(
+        f"bcftools mpileup sorted_output.bam -f {kwargs['reference']} > bcftools_mpileup.bcf",
+        shell=True
+    )
+
+    subprocess.run(
+        "bcftools call -m -O v -o out.vcf bcftools_mpileup.bcf",
+        shell=True
+    )
+
+    print(f"done!")
+
+
+"""
+dit hieronder is voor het later aanroepen van de code thx oscar papito
+kwargs = {
+    "fastq_bestand": "reads.fastq",
+    "reference": "referentie.fa",
+    "threads": 8,
+    "N": 5
+}
+
+main(kwargs)
+"""
