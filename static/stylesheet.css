@@ -12,6 +12,9 @@ body{
 img{
     width: 300px;
 }
+h1{
+    text-align: center;
+}
 .parent{
     display: flex;
     justify-content: center;
@@ -174,23 +177,6 @@ footer ul {
     margin-bottom: 50px;
 }
 
-.button {
-    display: inline-block;
-    padding: 10px 20px;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    transition: 0.3s;
-    font-family: inherit;
-}
-
-.btn_submit {
-    background-color: green;
-}
 
 .btn_reset {
     background-color: orangered;

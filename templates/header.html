@@ -12,10 +12,11 @@
 
     </header>
     <nav>
+        <a href="{{ url_for('input_output_page') }}">Analyse pagina</a>
         <a href="{{ url_for('information_page') }}">Informatie</a>
         <a href="{{ url_for('tools_info_page') }}">Tools</a>
         <a href="{{ url_for('reference_gen_page') }}">Referentie genomen</a>
-        <a href="{{ url_for('input_output_page') }}">Analyse pagina</a><br><br>
+        <br><br>
     </nav>
 
      {% block content %}

@@ -1,59 +1,61 @@
 {% extends "header.html" %}
 {% block content %}
+    <h1> Extra informatie </h1>
+    <div class="parent">
 
-    <main>
-    <section id="intro">
-        <h2>Introductie</h2>
-        <p>
-            In dit project onderzoeken we of een geautomatiseerde analyse-pipeline
-            de verwerking van PCR-gebaseerde Nanopore-sequencingdata kan versnellen
-            zonder verlies van nauwkeurigheid.
-        </p>
-        <p>
-            Ruwe sequencing-data heeft op zichzelf geen betekenis. Met behulp van
-            gespecialiseerde bio-informatica tools zetten we deze data om naar
-            bruikbare informatie over mutaties in het DNA.
-        </p>
-    </section>
+        <div class="child">
+            <h2>Introductie</h2>
+            <p>
+                In dit project ontwikkelen wij als groep een website die een bio-informatica-analyse-pipeline
+                uitvoert voor DNA-sequencing data. De website is gebaseerd op het artikel van Namias et al.[1]
+                over een methode om Nanopore-sequencing en PCR-data efficiënter te analyseren.
 
-    <section id="onderzoek">
-        <h2>Onderzoeksvragen</h2>
-        <ul>
-            <li>Kan een geautomatiseerde analyse-pipeline sneller werken zonder verlies van nauwkeurigheid?</li>
-            <li>Wat is het verschil tussen nano-sequencing en PCR?</li>
-            <li>Wat is het verschil tussen een gen en een genoom?</li>
-            <li>Welk uiterlijk (kleur, lettertype, grootte) is het meest gebruiksvriendelijk?</li>
-        </ul>
-    </section>
+            </p>
+            <p>Het artikel beschrijft onderzoek naar de genen cidA en cidB in het genoom van Wolbachia pipientis.
+                Wolbachia pipientis is een bacterie die voorkomt in verschillende insecten, waaronder muggen.
+                Deze genen produceren eiwitten die een proces veroorzaken dat cytoplasmatische incompatibiliteit
+                wordt genoemd. Dit betekent dat mannelijke muggen die besmet zijn met een bepaalde variant van
+                Wolbachia alleen vruchtbare nakomelingen kunnen krijgen met vrouwelijke muggen die dezelfde variant
+                dragen.
 
-    <section id="resultaten">
-        <h2>Resultaten (voorbeeld)</h2>
-        <p>
-            Hieronder zie je een voorbeeld van hoe mutaties uit een VCF-bestand
-            op de website getoond kunnen worden.
-        </p>
+            </p>
+        </div>
+        <div class="child">
+            <h2>Onderzoeksvragen</h2>
+            <ul>
+                <li>Kan een geautomatiseerde analyse-pipeline sneller werken zonder verlies van nauwkeurigheid?</li>
+                <li>Wat is het verschil tussen nano-sequencing en PCR?</li>
+                <li>Wat is het verschil tussen een gen en een genoom?</li>
+                <li>Welk uiterlijk (kleur, lettertype, grootte) is het meest gebruiksvriendelijk?</li>
+            </ul>
+        </div>
+        <div class="child">
+            <h2>Resultaten (voorbeeld)</h2>
+            <p>
+                Hieronder zie je een voorbeeld van hoe mutaties uit een VCF-bestand
+                op de website getoond kunnen worden.
+            </p>
 
-        <table>
-            <tr>
-                <th>Positie</th>
-                <th>REF</th>
-                <th>ALT</th>
-                <th>Kwaliteit</th>
-            </tr>
-            <tr>
-                <td>10543</td>
-                <td>G</td>
-                <td>A</td>
-                <td>99</td>
-            </tr>
-            <tr>
-                <td>20891</td>
-                <td>C</td>
-                <td>T</td>
-                <td>87</td>
-            </tr>
-        </table>
-    </section>
-    </main>
-
+            <table>
+                <tr>
+                    <th>Positie</th>
+                    <th>REF</th>
+                    <th>ALT</th>
+                    <th>Kwaliteit</th>
+                </tr>
+                <tr>
+                    <td>10543</td>
+                    <td>G</td>
+                    <td>A</td>
+                    <td>99</td>
+                </tr>
+                <tr>
+                    <td>20891</td>
+                    <td>C</td>
+                    <td>T</td>
+                    <td>87</td>
+                </tr>
+            </table>
+        </div>
+    </div>
 {% endblock %}
