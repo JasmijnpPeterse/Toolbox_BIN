@@ -24,18 +24,23 @@ def reference_gen_page():
 def stylesheet():
     return send_from_directory(os.path.join(app.root_path, 'static'), 'stylesheet.css')
 
-
 @app.route('/aanmelden', methods=['POST'])
 def aanmelden():
     email = request.form.get('email')
     if email:
-        with open('emails.txt', 'a') as f:
+        email_file = os.path.join(upload_folder, 'emails.txt')
+        with open(email_file, 'a') as f:
             f.write(email + '\n')
-    return redirect(url_for('lucas'))
+    return redirect('web.html')
 
+upload_folder = ('Data')
+os.makedirs(upload_folder, exist_ok=True)
 
 @app.route('/web.html', methods=['GET', 'POST'])
 def output():
+    uitslag = session.get("uitslag")
+    show_results = session.get("show_results", False)
+
     if request.method == 'GET':
         return render_template('web.html')
     elif request.method == 'POST':
@@ -45,7 +50,22 @@ def output():
             'kwaliteitscore': request.form.get('kwaliteitscore') is not None,
             'vcf_doc': request.form.get('vcf_doc') is not None
         }
-        return render_template('web.html', **kwags)
+
+        # Nieuwe input file
+        file = request.files.get('data')
+
+        if file and file.filename != "":
+            filename = file.filename
+            file.save(os.path.join(upload_folder, filename))
+
+            uitslag = {"status": f"Bestand '{filename}' succesvol geüpload"}
+            show_results = True
+        else:
+            uitslag = {"status": "FOUT: Geen bestand geselecteerd"}
+            show_results = True  # ook tonen zodat je de fout ziet
+
+        return render_template('web.html', **kwags, uitslag=uitslag, show_results=show_results)
+
 
     return render_template('web.html',
         tabel_snps=False,
@@ -53,33 +73,6 @@ def output():
         kwaliteitscore=False,
         vcf_doc=False
     )
-
-upload_folder = ('Uploads')
-os.makedirs(upload_folder, exist_ok=True)
-
-@app.route("/", methods=["GET", "POST"])
-def index():
-    # Haal data op
-    uitslag = session.get("uitslag")
-    show_results = session.get("show_results", False)
-
-    if request.method == "POST":
-        # Nieuwe input file
-        file = request.files.get('data')
-        if file and file.filename != "":
-            filename = file.filename
-            file.save(os.path.join(upload_folder, filename))
-            session["uitslag"] = {
-                "status": f"Bestand '{filename}' succesvol geüpload"
-            }
-            session["show_results"] = True
-
-        else:
-            session["uitslag"] = {"status": "FOUT: Geen bestand geselecteerd"}
-            session["show_results"] = False
-
-
-    return render_template('test.html', uitslag=uitslag, show_results=show_results)
 
 if __name__ == '__main__':
     app.run(debug=True)

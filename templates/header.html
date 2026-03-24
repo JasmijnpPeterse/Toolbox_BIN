@@ -37,7 +37,24 @@
             <li>jrj.peterse@st.hanze.nl</li>
             <li>adventa.christophany.rembet@st.hanze.nl</li>
         </ul>
-        <p>Dio-informatica project - Nanapore sequencing</p>
+        <p>Bio-informatica project - Nanopore sequencing</p>
+
+
+        <div class="email_update">
+            <input type="checkbox" id="emailToggle" style="display:none;">
+
+            <label for="emailToggle" style="cursor:pointer; color:white; text-decoration:underline;">
+                Klik hier om op de hoogte te blijven van updates
+            </label>
+
+            <div id="emailForm">
+                <p>Voer hier je email in om bericht te worden over updates!</p>
+                <form action="/aanmelden" method="POST">
+                    <input type="email" name="email" placeholder="jouw@email.com">
+                    <button type="submit">Aanmelden</button>
+                </form>
+            </div>
+        </div>
     </footer>
 
     </body>

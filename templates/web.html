@@ -4,7 +4,7 @@
     <div class="parent">
          <div class="child">
             <h1>input</h1>
-             <form action="web.html" method="POST">
+             <form action="web.html" method="POST" enctype="multipart/form-data">
                  <p class="input_output">Voeg hier uw document toe:</p>
                  <input type="file" name="data">
                  <br><br>
@@ -31,6 +31,10 @@
                 <p>Hieronder is het voorbeeld van het resultaat met de gedetecteerde mutaties en de bijhorende mapping data.</p>
 
                 <div class="resultaat">
+
+                {% if show_results %}
+                     <p>{{ uitslag.status }}</p>
+                {% endif %}
 
                 {% if tabel_snps %}
                     <table>
