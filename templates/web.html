@@ -1,26 +1,10 @@
-<!DOCTYPE html>
-<html lang="nl">
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="{{url_for('static', filename='stylesheet.css')}}">
-        <title>Bio-informatica Pipeline | Nanopore Analyse</title>
-    </head>
-    <body>
-    <header>
-        <h1>Geautomatiseerde Nanopore Analyse</h1>
-        <p> Bio-informatica project – DNA variant detectie</p>
-
-    </header>
-    <nav>
-        <a href="{{ url_for('about') }}">About</a>
-        <a href="{{ url_for('background_info_page') }}">Tools</a>
-        <a href="{{ url_for('output') }}">Reference genomen</a><br><br>
-    </nav>
-
+{% extends "header.html" %}
+{% block content %}
+    <h1>Analyse pagina</h1>
     <div class="parent">
          <div class="child">
             <h1>input</h1>
-             <form action="/Toolbox_BIN/static" method="POST">
+             <form action="web.html" method="POST" enctype="multipart/form-data">
                  <p class="input_output">Voeg hier uw document toe:</p>
                  <input type="file" name="data">
                  <br><br>
@@ -42,11 +26,15 @@
              </form>
 
         </div>
-                   <div class="child">
+        <div class="child">
                 <h1>Het Resultaat</h1>
                 <p>Hieronder is het voorbeeld van het resultaat met de gedetecteerde mutaties en de bijhorende mapping data.</p>
 
                 <div class="resultaat">
+
+                {% if show_results %}
+                     <p>{{ uitslag.status }}</p>
+                {% endif %}
 
                 {% if tabel_snps %}
                     <table>
@@ -78,47 +66,7 @@
                 {% if vcf_doc %}
                     <p>Download VCF bestand...</p>
                 {% endif %}
-                </div>
             </div>
         </div>
-
-        <footer>
-            <div class="makers">
-                <h2>Makers</h2>
-                <p>Deze website en analyse-pipeline zijn ontwikkeld door:</p>
-
-                <p>Lucas Bos</p>
-                <p>Jasmijn Peterse</p>
-                <p>Vani</p>
-            </div>
-
-            <ul>
-                <li>l.bos.5@st.hanze.nl</li>
-                <li>jrj.peterse@st.hanze.nl</li>
-                <li>email vani</li>
-            </ul>
-            <p>Dio-informatica project - Nanapore sequencing</p>
-        </footer>
-    </body>
-</html>
     </div>
-    <footer>
-        <div class="makers">
-            <h2>Makers</h2>
-            <p>Deze website en analyse-pipeline zijn ontwikkeld door:</p>
-
-            <p>Lucas Bos</p>
-            <p>Jasmijn Peterse</p>
-            <p>Vani</p>
-        </div>
-
-        <ul>
-            <li>l.bos.5@st.hanze.nl</li>
-            <li>jrj.peterse@st.hanze.nl</li>
-            <li>email vani</li>
-        </ul>
-        <p>Dio-informatica project - Nanapore sequencing</p>
-    </footer>
-
-    </body>
-</html>
+        {% endblock %}

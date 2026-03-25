@@ -1,27 +1,10 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{url_for('static', filename='stylesheet.css')}}">
-    <title>Bio-informatica Pipeline | Nanopore Analyse</title>
-</head>
-<body>
-    <header>
-        <h1>Geautomatiseerde Nanopore Analyse</h1>
-
-        <nav>
-            <a href="{{ url_for('about') }}">About</a>
-            <a href="{{ url_for('tools') }}">Tools</a>
-            <a href="{{ url_for('onderzoek') }}">Onderzoeksvragen</a>
-            <a href="{{ url_for('reference') }}">Reference genomen</a><br><br>
-            <a href="{{ url_for('index') }}">Terug naar Analyse</a>
-        </nav>
-    </header>
+{% extends "header.html" %}
+{% block content %}
 
     <h1>Gebruikte parameters</h1>
 
-    <div class="vakken">
-        <div class="tools">
+    <div class="parent">
+        <div class="child">
             <p><strong>Minimap2</strong></p>
             <p>
                 Minimap2 vergelijkt Nanopore-reads (FASTQ) met een referentiegenoom.
@@ -41,7 +24,7 @@
 
         </div>
 
-        <div class="tools">
+        <div class="child">
             <p><strong>SAMtools</strong></p>
             <p>
                 SAMtools zet grote SAM-bestanden om naar BAM-bestanden, sorteert ze
@@ -61,7 +44,7 @@
 
         </div>
 
-        <div class="tools">
+        <div class="child">
             <p><strong>BCFtools</strong></p>
             <p>
                 BCFtools detecteert echte genetische variaties en filtert ruis.
@@ -81,19 +64,4 @@
         </div>
     </div>
 
-<footer>
-    <div id="makers">
-        <h2>Makers</h2>
-        <p>Deze website en analyse-pipeline zijn ontwikkeld door:</p>
-        <ul>
-            <li>Lucas</li>
-            <li>Jasmijn</li>
-            <li>Vani</li>
-        </ul>
-    </div>
-
-    <p>Bio-informatica project – Nanopore sequencing</p>
-</footer>
-
-</body>
-</html>
+{% endblock %}
