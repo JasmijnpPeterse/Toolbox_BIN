@@ -10,11 +10,11 @@ def input_output_page():
 
 @app.route('/lucas.html')
 def information_page():
-    return render_template('lucas.html')
+    return render_template('Info_pagina.html')
 
 @app.route('/background_info.html')
 def tools_info_page():
-    return render_template('background_info.html')
+    return render_template('tools_info.html')
 
 @app.route('/reference.html')
 def reference_gen_page():
