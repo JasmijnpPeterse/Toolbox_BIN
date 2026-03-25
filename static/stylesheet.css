@@ -9,9 +9,6 @@ body{
     margin: 5px;
     border: 1px dotted black;
 }
-img{
-    width: 300px;
-}
 h1{
     text-align: center;
 }
@@ -122,7 +119,6 @@ footer ul {
     margin: 0;
 }
 
-
 .resultaat {
     display: flex;
     flex-direction: column;
@@ -142,22 +138,6 @@ footer ul {
     text-align: center;
 }
 
-.base_ref {
-    color: green;
-    font-weight: bold;
-}
-
-.base_alt {
-    color: red;
-    font-weight: bold;
-}
-
-.vakken {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
 /* Add this to stylesheet.css */
 #emailForm {
     display: none;
@@ -165,21 +145,6 @@ footer ul {
 
 #emailToggle:checked ~ #emailForm {
     display: block;
-}
-
-.info_blok {
-    border: 10px solid #112193;
-    border-radius: 12px;
-    padding: 25px;
-    width: 300px;
-    flex: auto;
-    text-align: center;
-    margin-bottom: 50px;
-}
-
-
-.btn_reset {
-    background-color: orangered;
 }
 
 /* Effect als je eroverheen gaat */
