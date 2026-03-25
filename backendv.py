@@ -33,15 +33,38 @@ def relevante_mutatie(self):
     return self.qual >= (een getal)
     """
 
-def filter_mutaties(volledige_lijst):
+def filter_mutaties(mutatie_lijst):
     relevante_mutaties = []
     ruis = []
-    for mutatie in volledige_lijst:
+    for mutatie in mutatie_lijst:
         if mutatie.relevante_mutatie():
             relevante_mutaties.append(mutatie)
         else:
             ruis.append(mutatie)
     return relevante_mutaties, ruis
+
+def aantal_mutaties(aantal_mut_lijst):
+    locatie_bijhouden = {}
+    frequentie = []
+
+    for mutatie in aantal_mut_lijst:
+        locatie = (mutatie.chrom, mutatie.pos)
+
+        if locatie in locatie_bijhouden:
+            locatie_bijhouden[locatie] += 1
+        else:
+            locatie_bijhouden[locatie] = 1
+
+    for (chrom, pos), count in locatie_bijhouden.items():
+        locatie_data = {
+            'chrom': chrom,
+            'pos': pos,
+            'frequentie': count,
+        }
+        frequentie.append(locatie_data)
+
+    return frequentie
+
 
 def main(kwargs):
     print(kwargs)
@@ -97,6 +120,8 @@ def main(kwargs):
     print(f"Relevante mutatie: {len(nodige_mutatie)}")
     print(f"Ruis mutatie: {len(onnodige_mutatie)}")
 
+    mutatie_frq = aantal_mutaties(mutatie_obj)
+    print(f"Mutatie frequntie: {len(mutatie_frq)}")
 
 
 """
