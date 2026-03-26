@@ -1,77 +1,44 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{url_for('static', filename='stylesheet.css')}}">
-    <title>Bio-informatica Pipeline | Nanopore Analyse</title>
-</head>
-<body>
-<header>
-    <h1>Geautomatiseerde Nanopore Analyse</h1>
+{% extends "header.html" %}
+{% block content %}
 
-    <nav>
-        <a href="{{ url_for('about') }}">About</a>
-        <a href="{{ url_for('tools') }}">Tools</a>
-        <a href="{{ url_for('onderzoek') }}">Onderzoeksvragen</a>
-        <a href="{{ url_for('reference') }}">Reference genomen</a><br><br>
-        <a href="{{ url_for('index') }}">Terug naar Analyse</a>
-    </nav>
-</header>
+    <h1>Reference genomen</h1>
 
-<h1>Reference genomen</h1>
-
-<div class="vakken">
-    <div class="tools">
-        <p><strong>Mens genoom</strong></p>
-        <p>
-            Hier is een voorbeeld van mens genoom.
+    <div class="parent">
+        <div class="child">
+            <p><strong>Mens genoom</strong></p>
+            <p>
+                Hier is een voorbeeld van mens genoom.
+                <br>
+                Download het bestand hier:
+                <br>
+                <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000001405.26/">Human reference genome</a>
+            </p>
             <br>
-            Download het bestand hier:
+        </div>
+
+        <div class="child">
+            <p><strong>Mug genoom</strong></p>
+            <p>
+                Hier is een voorbeeld van mug genoom.
+                <br>
+                Download het bestand hier:
+                <br>
+                <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_002204515.2/">Mosquito reference genome</a>
+            </p>
             <br>
-            <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000001405.26/">Human reference genome</a>
-        </p>
-        <br>
+
+        </div>
+
+        <div class="child">
+            <p><strong>Muis genoom</strong></p>
+            <p>
+                Hier is een voorbeeld van muis genoom.
+                <br>
+                Download het bestand hier:
+                <br>
+                <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000001635.27/">Mouse reference genome</a>
+            </p>
+            <br>
+        </div>
     </div>
-
-    <div class="tools">
-        <p><strong>Mug genoom</strong></p>
-        <p>
-            Hier is een voorbeeld van mug genoom.
-            <br>
-            Download het bestand hier:
-            <br>
-            <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_002204515.2/">Mosquito reference genome</a>
-        </p>
-        <br>
-
-    </div>
-
-    <div class="tools">
-        <p><strong>Muis genoom</strong></p>
-        <p>
-            Hier is een voorbeeld van muis genoom.
-            <br>
-            Download het bestand hier:
-            <br>
-            <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000001635.27/">Mouse reference genome</a>
-        </p>
-        <br>
-    </div>
-</div>
-
-<footer>
-    <div id="makers">
-        <h2>Makers</h2>
-        <p>Deze website en analyse-pipeline zijn ontwikkeld door:</p>
-        <ul>
-            <li>Lucas</li>
-            <li>Jasmijn</li>
-            <li>Vani</li>
-        </ul>
-    </div>
-
-    <p>Bio-informatica project – Nanopore sequencing</p>
-</footer>
-
-</body>
-</html>
+{% endblock %}
