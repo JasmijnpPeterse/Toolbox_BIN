@@ -24,6 +24,7 @@ def reference_gen_page():
 def stylesheet():
     return send_from_directory(os.path.join(app.root_path, 'static'), 'stylesheet.css')
 
+
 @app.route('/aanmelden', methods=['POST'])
 def aanmelden():
     email = request.form.get('email')
