@@ -53,17 +53,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>(1000)</td>
-                                <td>(A)</td>
-                                <td>(T)</td>
-                            </tr>
+                            {% for positie, waarden in snps_tabel_info.items() %}
+                                <tr>
+                                    <td>{{ positie }}</td>
+                                    <td>{{ waarden[0] }}</td>
+                                    <td>{{ waarden[1] }}</td>
+                                </tr>
+                                {% endfor %}
                         </tbody>
                     </table>
                 {% endif %}
 
                 {% if plot_mutaties %}
-                    <p>Mutaties plot hier...</p>
+                    <p>Staaftabel van de mutaties en op welke plekken deze voorkomen en hoelaat</p>
+                    <img src="mutaties.png" alt="Mutaties plot">
                 {% endif %}
 
                 {% if kwaliteitscore %}

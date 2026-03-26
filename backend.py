@@ -1,5 +1,6 @@
 import subprocess
 import time
+import matplotlib.pyplot as plt
 
 class Tools():
     def __init__(self, chrom, pos, ref, alt, qual):
@@ -10,7 +11,7 @@ class Tools():
         self.qual = float(qual) if qual != '.' else 0.0
 
 
-def main(kwargs):
+def run(kwargs):
     print(kwargs)
     print(kwargs["threads"])
     print(kwargs["fastq_bestand"])
@@ -73,7 +74,32 @@ dit hieronder is voor het later aanroepen van de code thx oscar papito
 
 """
 
-#backendv.py
+def lezen_vcf():
+    mutaties = {}
+    snip_tabel_info = {}
+    with open('empty.vcf', 'r') as f:
+        for line in f:
+            line = line.strip()
+            if line.startswith("#"):
+                continue
+            else:
+                splitline = line.split('\t')
+                if splitline[4]:
+                    if float(splitline[5]) >= 30:
+                        if splitline[1] not in mutaties:
+                            mutaties[splitline[1]] = 1
+                        else:
+                            mutaties[splitline[1]] += 1
+                snip_tabel_info[splitline[1]] = [splitline[3], splitline[4]]
+    return mutaties, snip_tabel_info
+
+def maken_plot(mutaties):
+    plt.bar(mutaties.keys(), mutaties.values())
+    plt.xticks(rotation=90)
+    plt.ylabel("Aantal mutaties")
+    plt.title("Mutaties met QUAL ≥ 30")
+    plt.tight_layout()
+    plt.savefig("mutaties.png")
 
 def vcf_naar_lijst(vcf_bestand):
     with open(vcf_bestand, 'r') as vcf:
@@ -126,14 +152,19 @@ def aantal_mutaties(aantal_mut_lijst):
 
 
 def main():
-    mutatie_obj = vcf_naar_lijst("out.vcf")
-    print(f"Mutatie gevonden: {len(mutatie_obj)}")
+    run(kwargs)
+    mutaties, snps_tabel_info = lezen_vcf()
 
-    nodige_mutatie, onnodige_mutatie = filter_mutaties(mutatie_obj)
-    print(f"Relevante mutatie: {len(nodige_mutatie)}")
-    print(f"Ruis mutatie: {len(onnodige_mutatie)}")
 
-    mutatie_frq = aantal_mutaties(mutatie_obj)
-    print(f"Mutatie frequntie: {len(mutatie_frq)}")
+    #mutatie_obj = vcf_naar_lijst("out.vcf")
+    #print(f"Mutatie gevonden: {len(mutatie_obj)}")
+
+    #nodige_mutatie, onnodige_mutatie = filter_mutaties(mutatie_obj)
+    #print(f"Relevante mutatie: {len(nodige_mutatie)}")
+    #print(f"Ruis mutatie: {len(onnodige_mutatie)}")
+
+    #mutatie_frq = aantal_mutaties(mutatie_obj)
+    #print(f"Mutatie frequntie: {len(mutatie_frq)}")
 
 main()
+
