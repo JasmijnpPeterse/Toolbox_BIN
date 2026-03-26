@@ -1,38 +1,23 @@
-<!DOCTYPE html>
-<html lang="nl">
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="{{url_for('static', filename='stylesheet.css')}}">
-        <title>Bio-informatica Pipeline | Nanopore Analyse</title>
-    </head>
-    <body>
-    <header>
-        <h1>Geautomatiseerde Nanopore Analyse</h1>
-        <p> Bio-informatica project – DNA variant detectie</p>
+{% extends "header.html" %}
+{% block content %}
 
-    </header>
-    <nav>
-        <a href="{{ url_for('about') }}">About</a>
-        <a href="{{ url_for('tools') }}">Tools</a>
-        <a href="{{ url_for('onderzoek') }}">Onderzoeksvragen</a>
-        <a href="{{ url_for('reference') }}">Reference genomen</a><br><br>
-    </nav>
-
+    <h1>Analyse pagina</h1>
     <div class="parent">
          <div class="child">
             <h1>input</h1>
-             <form action="/Toolbox_BIN/static" method="POST">
-                 <p class="input_output">Voeg hier uw document toe:</p>
-                 <input type="file" name="data">
-                 <br><br>
+             <form action="web.html" method="POST" enctype="multipart/form-data">
+                 <p class="ïnput_output">Wilt u een specifiek gen bekijken?</p>
+                 <p>Zo ja vul hieronder het start en het eindpunt in, zo niet laat leeg</p>
+                 <input type="text" name="startpunt">
+                 <input type="text" name="eindpunt">
 
                  <p class="input_output">Wat wilt u als resultaat?</p>
 
                  <input name="tabel_snps" type="checkbox" id="tabel_snps" value="tabel_snps">
-                 <label for="tabel_snps">Een tabel met al de snp's </label><br>
-                 <input name="tabel_mutaties" type="checkbox" id="mutations" value="mutations">
-                 <label for="mutations">Een tabel met de mutaties, hun locaties en welk type</label><br>
-                 <input name="kwaliteitscore"   type="checkbox" id="qualityscore" value="qualityscore">
+                 <label for="plot_snps">Een tabel met al de snp's </label><br>
+                 <input name="plot_mutaties" type="checkbox" id="mutations" value="mutations">
+                 <label for="mutations">Een plot met de mutaties die vaker voorkomen</label><br>
+                 <input name="kwaliteitscore" type="checkbox" id="qualityscore" value="qualityscore">
                  <label for="qualityscore">Een kwaliteitsscore</label><br>
                  <input name="vcf_doc" type="checkbox" id="vcf_file" value="vcf_file">
                  <label for="vcf_file">A vcf document met alle snp's en hun data</label><br>
@@ -43,17 +28,15 @@
              </form>
 
         </div>
-                   <div class="child">
+        <div class="child">
                 <h1>Het Resultaat</h1>
                 <p>Hieronder is het voorbeeld van het resultaat met de gedetecteerde mutaties en de bijhorende mapping data.</p>
 
-            {% if not show_results %}
-                <p>Upload een bestand en druk op submit om de analyse te starten.</p>
-            {% else %}
-                <p>Status: <strong>{{ uitslag.status }}</strong></p>
-                <p>Bestand: {{ uitslag.filename }}</p>
-
                 <div class="resultaat">
+
+                {% if show_results %}
+                     <p>{{ uitslag.status }}</p>
+                {% endif %}
 
                 {% if tabel_snps %}
                     <table>
@@ -67,20 +50,15 @@
                         <tbody>
                             <tr>
                                 <td>(1000)</td>
-                                <td class="base_ref">(A)</td>
-                                <td class="base_alt">(T)</td>
-                            </tr>
-                            <tr>
-                                <td>(2945)</td>
-                                <td class="base_ref">(G)</td>
-                                <td class="base_alt">(C)</td>
+                                <td>(A)</td>
+                                <td>(T)</td>
                             </tr>
                         </tbody>
                     </table>
                 {% endif %}
 
-                {% if tabel_mutaties %}
-                    <p>Mutaties tabel hier...</p>
+                {% if plot_mutaties %}
+                    <p>Mutaties plot hier...</p>
                 {% endif %}
 
                 {% if kwaliteitscore %}
@@ -90,26 +68,7 @@
                 {% if vcf_doc %}
                     <p>Download VCF bestand...</p>
                 {% endif %}
-                </div>
             </div>
         </div>
-
-        <footer>
-            <div class="makers">
-                <h2>Makers</h2>
-                <p>Deze website en analyse-pipeline zijn ontwikkeld door:</p>
-
-                <p>Lucas Bos</p>
-                <p>Jasmijn Peterse</p>
-                <p>Vani</p>
-            </div>
-
-            <ul>
-                <li>l.bos.5@st.hanze.nl</li>
-                <li>jrj.peterse@st.hanze.nl</li>
-                <li>email vani</li>
-            </ul>
-            <p>Dio-informatica project - Nanapore sequencing</p>
-        </footer>
-    </body>
-</html>
+    </div>
+        {% endblock %}
