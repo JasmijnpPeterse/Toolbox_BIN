@@ -1,6 +1,7 @@
-from flask import Flask,send_from_directory,redirect, url_for, render_template_string, render_template, request, session
+from flask import Flask,send_from_directory,redirect, render_template, request
 import os
-from backend import main as run_pipeline
+from backend import run as run_pipeline
+from backend import lezen_vcf
 
 app = Flask(__name__)
 app.secret_key = "BINNANPORE"
