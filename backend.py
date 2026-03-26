@@ -52,6 +52,9 @@ def main(kwargs):
 
     print(f"done!")
 
+
+"""
+dit hieronder is voor het later aanroepen van de code thx oscar papito
 kwargs = {
     "fastq_bestand": "/homes/lbos5/ERR2165898.fastq",
     "reference": "/homes/lbos5/Downloads/reference/ncbi_dataset/data/GCF_000006945.2/GCF_000006945.2_ASM694v2_genomic.fna",
@@ -61,7 +64,6 @@ kwargs = {
 
 main(kwargs)
 
-"""
 dit hieronder is voor het later aanroepen van de code thx oscar papito
 
 """
