@@ -2,7 +2,12 @@ import subprocess
 import time
 
 class Tools():
-    pass
+    def __init__(self, chrom, pos, ref, alt, qual):
+        self.chrom = chrom
+        self.pos = pos
+        self.ref = ref
+        self.alt = alt
+        self.qual = float(qual) if qual != '.' else 0.0
 
 
 def main(kwargs):
@@ -51,3 +56,84 @@ def main(kwargs):
     )
 
     print(f"done!")
+
+
+"""
+dit hieronder is voor het later aanroepen van de code thx oscar papito
+kwargs = {
+    "fastq_bestand": "/homes/lbos5/ERR2165898.fastq",
+    "reference": "/homes/lbos5/Downloads/reference/ncbi_dataset/data/GCF_000006945.2/GCF_000006945.2_ASM694v2_genomic.fna",
+    "threads": 8,
+    "N": 5
+}
+
+main(kwargs)
+
+dit hieronder is voor het later aanroepen van de code thx oscar papito
+
+"""
+
+#backendv.py
+
+def vcf_naar_lijst(vcf_bestand):
+    with open(vcf_bestand, 'r') as vcf:
+        lijst = []
+        for line in vcf:
+            if line.startswith('#'):
+                continue
+            regel = line.strip().split('\t')
+            mutatie = Tools(
+                chrom = regel[0],
+                pos = regel[1],
+                ref = regel[3],
+                alt = regel[4],
+                qual = regel[5]
+            )
+            lijst.append(mutatie)
+    return lijst
+
+def relevante_mutatie(self):
+    return self.qual >= 30
+
+def filter_mutaties(mutatie_lijst):
+    relevante_mutaties = []
+    ruis = []
+    for mutatie in mutatie_lijst:
+        if relevante_mutatie(mutatie):
+            relevante_mutaties.append(mutatie)
+        else:
+            ruis.append(mutatie)
+    return relevante_mutaties, ruis
+
+def aantal_mutaties(aantal_mut_lijst):
+    locatie_bijhouden = {}
+
+    for mutatie in aantal_mut_lijst:
+        sleutel = (mutatie.chrom, mutatie.pos)
+        locatie_bijhouden[sleutel] = locatie_bijhouden.get(sleutel, 0) + 1
+
+    frequentie = []
+
+    for (chrom, pos), count in locatie_bijhouden.items():
+        locatie_data = {
+            'chrom': chrom,
+            'pos': pos,
+            'frequentie': count,
+        }
+        frequentie.append(locatie_data)
+
+    return frequentie
+
+
+def main():
+    mutatie_obj = vcf_naar_lijst("out.vcf")
+    print(f"Mutatie gevonden: {len(mutatie_obj)}")
+
+    nodige_mutatie, onnodige_mutatie = filter_mutaties(mutatie_obj)
+    print(f"Relevante mutatie: {len(nodige_mutatie)}")
+    print(f"Ruis mutatie: {len(onnodige_mutatie)}")
+
+    mutatie_frq = aantal_mutaties(mutatie_obj)
+    print(f"Mutatie frequntie: {len(mutatie_frq)}")
+
+main()
