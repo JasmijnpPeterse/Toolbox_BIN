@@ -8,11 +8,11 @@ app.secret_key = "BINNANPORE"
 def input_output_page():
     return render_template('web.html')
 
-@app.route('/lucas.html')
+@app.route('/Info_pagina.html')
 def information_page():
     return render_template('Info_pagina.html')
 
-@app.route('/background_info.html')
+@app.route('/tools_info.html')
 def tools_info_page():
     return render_template('tools_info.html')
 
@@ -46,7 +46,7 @@ def output():
     elif request.method == 'POST':
         kwags = {
             'tabel_snps': request.form.get('tabel_snps') is not None,
-            'tabel_mutaties': request.form.get('tabel_mutaties') is not None,
+            'plot_mutaties': request.form.get('plot_mutaties') is not None,
             'kwaliteitscore': request.form.get('kwaliteitscore') is not None,
             'vcf_doc': request.form.get('vcf_doc') is not None
         }
