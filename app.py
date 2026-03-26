@@ -1,5 +1,6 @@
 from flask import Flask,send_from_directory,redirect, url_for, render_template_string, render_template, request, session
 import os
+import backend
 
 app = Flask(__name__)
 app.secret_key = "BINNANPORE"
@@ -44,7 +45,17 @@ def output():
             'kwaliteitscore': request.form.get('kwaliteitscore') is not None,
             'vcf_doc': request.form.get('vcf_doc') is not None
         }
+        pipeline_data = {
+            "fastq_bestand": "/homes/lbos5/ERR2165898.fastq",
+            "reference": "/homes/lbos5/Downloads/reference/ncbi_dataset/data/GCF_000006945.2/GCF_000006945.2_ASM694v2_genomic.fna",
+            "threads": 8,
+            "N": 5
+        }
+        backend.main(pipeline_data)
+
+
         return render_template('web.html', **kwags)
+
 
     return render_template('web.html',
         tabel_snps=False,
