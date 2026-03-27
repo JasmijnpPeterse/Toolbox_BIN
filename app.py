@@ -6,8 +6,8 @@ from backend import lezen_vcf, maken_plot
 app = Flask(__name__)
 app.secret_key = "BINNANPORE"
 
-FASTQ_BESTAND = "/homes/lbos5/ERR2165898.fastq"
-REFERENCE = "/homes/lbos5/Downloads/reference/ncbi_dataset/data/GCF_000006945.2/GCF_000006945.2_ASM694v2_genomic.fna"
+FASTQ_BESTAND = "/homes/jrjpeterse/Documents/ERR2165898.fastq"
+REFERENCE = "/homes/jrjpeterse/Documents/ncbi_dataset/ncbi_dataset/data/GCF_000006945.2//GCF_000006945.2_ASM694v2_genomic.fna"
 
 @app.route('/')
 def input_output_page():
