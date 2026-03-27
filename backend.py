@@ -101,6 +101,9 @@ def maken_plot(mutaties):
     plt.tight_layout()
     plt.savefig("mutaties.png")
 
+
+#?
+
 def vcf_naar_lijst(vcf_bestand):
     with open(vcf_bestand, 'r') as vcf:
         lijst = []
