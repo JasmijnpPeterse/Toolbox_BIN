@@ -50,19 +50,21 @@ def output():
         region = None
         region_error = None
 
-        if chromosoom:
-            if startpunt and eindpunt:
-                try:
-                    if int(startpunt) >= int(eindpunt):
-                        region_error = "Startpositie moet kleiner zijn dan eindpositie."
-                    else:
+        if startpunt and eindpunt:
+            try:
+                if int(startpunt) >= int(eindpunt):
+                    region_error = "Startpositie moet kleiner zijn dan eindpositie."
+                else:
+                    if chromosoom:
                         region = f"{chromosoom}:{startpunt}-{eindpunt}"
-                except ValueError:
-                    region_error = "Start- en eindpositie moeten gehele getallen zijn."
-            elif startpunt or eindpunt:
-                region_error = "Vul zowel de start- als eindpositie in, of laat beide leeg."
-            else:
-                region = chromosoom
+                    else:
+                        region = f"{startpunt}-{eindpunt}"
+            except ValueError:
+                region_error = "Start- en eindpositie moeten gehele getallen zijn."
+        elif startpunt or eindpunt:
+            region_error = "Vul zowel de start- als eindpositie in, of laat beide leeg."
+        else:
+            region = chromosoom
 
         if region_error:
             return render_template('web.html', region_error=region_error)
@@ -80,8 +82,14 @@ def output():
         }
 
         run_pipeline(kwags)
+        mutaties, snps_tabel_info = lezen_vcf()
 
-        return render_template('web.html', **kwags)
+        return render_template('web.html',
+                               **kwags,
+                               mutaties=mutaties,
+                               snps_tabel_info=snps_tabel_info,
+                               show_results=True
+                               )
 
     return render_template('web.html',
         tabel_snps=False,
