@@ -54,10 +54,9 @@ def run(kwargs):
         "bcftools call -m -O v -o output.vcf bcftools_mpileup.bcf",
         shell=True
     )
-
     subprocess.run(
-        "rm bcftools_full.bcf, bcftools_mpileup.bcf, output.bam, output.sam, output_full.bam, output_full.sam, sorted_full.bam, sorted_full.bam.bai, sorted_output.bam, sorted_output.bam.bai"
-
+        "bctools filter -i QUAL>=30' output.vcf -o output.vcf",
+        shell=True
     )
 
     print(f"done!")
