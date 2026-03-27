@@ -77,7 +77,7 @@ dit hieronder is voor het later aanroepen van de code thx oscar papito
 def lezen_vcf():
     mutaties = {}
     snip_tabel_info = {}
-    with open('empty.vcf', 'r') as f:
+    with open('output.vcf', 'r') as f:
         for line in f:
             line = line.strip()
             if line.startswith("#"):
