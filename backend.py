@@ -164,9 +164,11 @@ def aantal_mutaties(aantal_mut_lijst):
     return frequentie
 
 
-#def main():
- #   run(kwargs)
-  #  mutaties, snps_tabel_info = lezen_vcf()
+
+"""
+def main():
+    run(kwags)
+    mutaties, snps_tabel_info = lezen_vcf()
 
 
     #mutatie_obj = vcf_naar_lijst("out.vcf")
@@ -179,5 +181,5 @@ def aantal_mutaties(aantal_mut_lijst):
     #mutatie_frq = aantal_mutaties(mutatie_obj)
     #print(f"Mutatie frequntie: {len(mutatie_frq)}")
 
-#main()
-
+main()
+"""
