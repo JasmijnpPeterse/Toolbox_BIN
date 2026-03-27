@@ -50,6 +50,11 @@ def main(kwargs):
         shell=True
     )
 
+    subprocess.run(
+        "bcftools filter -i 'QUAL>=30' output.vcf -o bcftools_filter.bcf",
+        shell=True
+    )
+
     print(f"done!")
 
 
