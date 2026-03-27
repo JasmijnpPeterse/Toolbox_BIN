@@ -10,7 +10,6 @@ class Tools():
         self.alt = alt
         self.qual = float(qual) if qual != '.' else 0.0
 
-
 def run(kwargs):
     print(kwargs)
     print(kwargs["threads"])
@@ -64,21 +63,6 @@ def run(kwargs):
     print(f"done!")
 
 
-"""
-dit hieronder is voor het later aanroepen van de code thx oscar papito
-kwargs = {
-    "fastq_bestand": "/homes/lbos5/ERR2165898.fastq",
-    "reference": "/homes/lbos5/Downloads/reference/ncbi_dataset/data/GCF_000006945.2/GCF_000006945.2_ASM694v2_genomic.fna",
-    "threads": 8,
-    "N": 5
-}
-
-main(kwargs)
-
-dit hieronder is voor het later aanroepen van de code thx oscar papito
-
-"""
-
 def lezen_vcf():
     mutaties = {}
     snip_tabel_info = {}
@@ -89,8 +73,9 @@ def lezen_vcf():
                 continue
             else:
                 splitline = line.split('\t')
-                if splitline[3]:
-                    if splitline[4] != '.' and float(splitline[5]) >= 30:
+                if splitline[4]:
+                    qual = splitline[5]
+                    if qual != '.' and float(qual) >= 30:  # <-- fix here
                         if splitline[1] not in mutaties:
                             mutaties[splitline[1]] = 1
                         else:
@@ -106,76 +91,3 @@ def maken_plot(mutaties):
     plt.title("Mutaties met QUAL ≥ 30")
     plt.tight_layout()
     plt.savefig("mutaties.png")
-
-
-#?
-
-def vcf_naar_lijst(vcf_bestand):
-    with open(vcf_bestand, 'r') as vcf:
-        lijst = []
-        for line in vcf:
-            if line.startswith('#'):
-                continue
-            regel = line.strip().split('\t')
-            mutatie = Tools(
-                chrom = regel[0],
-                pos = regel[1],
-                ref = regel[3],
-                alt = regel[4],
-                qual = regel[5]
-            )
-            lijst.append(mutatie)
-    return lijst
-
-def relevante_mutatie(self):
-    return self.qual >= 30
-
-def filter_mutaties(mutatie_lijst):
-    relevante_mutaties = []
-    ruis = []
-    for mutatie in mutatie_lijst:
-        if relevante_mutatie(mutatie):
-            relevante_mutaties.append(mutatie)
-        else:
-            ruis.append(mutatie)
-    return relevante_mutaties, ruis
-
-def aantal_mutaties(aantal_mut_lijst):
-    locatie_bijhouden = {}
-
-    for mutatie in aantal_mut_lijst:
-        sleutel = (mutatie.chrom, mutatie.pos)
-        locatie_bijhouden[sleutel] = locatie_bijhouden.get(sleutel, 0) + 1
-
-    frequentie = []
-
-    for (chrom, pos), count in locatie_bijhouden.items():
-        locatie_data = {
-            'chrom': chrom,
-            'pos': pos,
-            'frequentie': count,
-        }
-        frequentie.append(locatie_data)
-
-    return frequentie
-
-
-
-"""
-def main():
-    run(kwags)
-    mutaties, snps_tabel_info = lezen_vcf()
-
-
-    #mutatie_obj = vcf_naar_lijst("out.vcf")
-    #print(f"Mutatie gevonden: {len(mutatie_obj)}")
-
-    #nodige_mutatie, onnodige_mutatie = filter_mutaties(mutatie_obj)
-    #print(f"Relevante mutatie: {len(nodige_mutatie)}")
-    #print(f"Ruis mutatie: {len(onnodige_mutatie)}")
-
-    #mutatie_frq = aantal_mutaties(mutatie_obj)
-    #print(f"Mutatie frequntie: {len(mutatie_frq)}")
-
-main()
-"""

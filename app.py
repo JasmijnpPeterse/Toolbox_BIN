@@ -6,9 +6,8 @@ from backend import lezen_vcf, maken_plot
 app = Flask(__name__)
 app.secret_key = "BINNANPORE"
 
-
-FASTQ_BESTAND = "/homes/jrjpeterse/Documents/ERR2165898.fastq"
-REFERENCE     = "/homes/jrjpeterse/Documents/ncbi_dataset/ncbi_dataset/data/GCF_000006945.2/GCF_000006945.2_ASM694v2_genomic.fna"
+FASTQ_BESTAND = "/homes/lbos5/ERR2165898.fastq"
+REFERENCE = "/homes/lbos5/Downloads/reference/ncbi_dataset/data/GCF_000006945.2/GCF_000006945.2_ASM694v2_genomic.fna"
 
 @app.route('/')
 def input_output_page():
@@ -51,19 +50,21 @@ def output():
         region = None
         region_error = None
 
-        if chromosoom:
-            if startpunt and eindpunt:
-                try:
-                    if int(startpunt) >= int(eindpunt):
-                        region_error = "Startpositie moet kleiner zijn dan eindpositie."
-                    else:
+        if startpunt and eindpunt:
+            try:
+                if int(startpunt) >= int(eindpunt):
+                    region_error = "Startpositie moet kleiner zijn dan eindpositie."
+                else:
+                    if chromosoom:
                         region = f"{chromosoom}:{startpunt}-{eindpunt}"
-                except ValueError:
-                    region_error = "Start- en eindpositie moeten gehele getallen zijn."
-            elif startpunt or eindpunt:
-                region_error = "Vul zowel de start- als eindpositie in, of laat beide leeg."
-            else:
-                region = chromosoom
+                    else:
+                        region = f"{startpunt}-{eindpunt}"
+            except ValueError:
+                region_error = "Start- en eindpositie moeten gehele getallen zijn."
+        elif startpunt or eindpunt:
+            region_error = "Vul zowel de start- als eindpositie in, of laat beide leeg."
+        else:
+            region = chromosoom
 
         if region_error:
             return render_template('web.html', region_error=region_error)
