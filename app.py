@@ -1,7 +1,7 @@
 from flask import Flask,send_from_directory,redirect, render_template, request
 import os
 from backend import run as run_pipeline
-from backend import lezen_vcf
+from backend import lezen_vcf, maken_plot
 
 app = Flask(__name__)
 app.secret_key = "BINNANPORE"
@@ -69,7 +69,7 @@ def output():
         if region_error:
             return render_template('web.html', region_error=region_error)
 
-        kwags = {
+        kwargs = {
             'fastq_bestand': FASTQ_BESTAND,
             'reference': REFERENCE,
             'threads': 8,
@@ -81,15 +81,18 @@ def output():
             'vcf_doc': request.form.get('vcf_doc') is not None
         }
 
-        run_pipeline(kwags)
-        mutaties, snps_tabel_info = lezen_vcf()
+        run_pipeline(kwargs)
+        mutaties, snps_tabel_info = lezen_vcf()  # ← was geïmporteerd maar nooit aangeroepen
 
-        return render_template('web.html',
-                               **kwags,
-                               mutaties=mutaties,
-                               snps_tabel_info=snps_tabel_info,
-                               show_results=True
-                               )
+        if kwargs['plot_mutaties']:
+            maken_plot(mutaties)
+
+        return render_template(
+            'web.html',
+            **kwargs,
+            mutaties=mutaties,
+            snps_tabel_info=snps_tabel_info,
+        )
 
     return render_template('web.html',
         tabel_snps=False,

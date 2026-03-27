@@ -55,6 +55,11 @@ def run(kwargs):
         shell=True
     )
 
+    subprocess.run(
+        "rm bcftools_full.bcf, bcftools_mpileup.bcf, output.bam, output.sam, output_full.bam, output_full.sam, sorted_full.bam, sorted_full.bam.bai, sorted_output.bam, sorted_output.bam.bai"
+
+    )
+
     print(f"done!")
 
 
@@ -75,7 +80,8 @@ def lezen_vcf():
                             mutaties[splitline[1]] = 1
                         else:
                             mutaties[splitline[1]] += 1
-                snip_tabel_info[splitline[1]] = [splitline[3], splitline[4]]
+                if splitline[4] != '.':
+                    snip_tabel_info[splitline[1]] = [splitline[3], splitline[4]]
     return mutaties, snip_tabel_info
 
 def maken_plot(mutaties):
