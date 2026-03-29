@@ -68,6 +68,10 @@
                 {% if vcf_doc %}
                     <p>Download VCF bestand...</p>
                 {% endif %}
+
+                {% if download_pad %}
+                    <p>Het resultaat is opgeslagen op {{ download_pad }}</p>
+                {% endif %}
             </div>
         </div>
     </div>

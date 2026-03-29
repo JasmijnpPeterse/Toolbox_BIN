@@ -35,14 +35,17 @@ def aanmelden():
 
 @app.route('/web.html', methods=['GET', 'POST'])
 def output():
+    download_map = os.getcwd()
     if request.method == 'GET':
         return render_template('web.html')
     elif request.method == 'POST':
+        pad_naar_download = os.path.join(download_map, "output.vcf")
         kwags = {
             'tabel_snps': request.form.get('tabel_snps') is not None,
             'plot_mutaties': request.form.get('plot_mutaties') is not None,
             'kwaliteitscore': request.form.get('kwaliteitscore') is not None,
-            'vcf_doc': request.form.get('vcf_doc') is not None
+            'vcf_doc': request.form.get('vcf_doc') is not None,
+            'download_pad': pad_naar_download
         }
         return render_template('web.html', **kwags)
 
