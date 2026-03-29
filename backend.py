@@ -1,139 +1,62 @@
+import matplotlib.pyplot as plt
 import subprocess
-import time
-
-class Tools():
-    def __init__(self, chrom, pos, ref, alt, qual):
-        self.chrom = chrom
-        self.pos = pos
-        self.ref = ref
-        self.alt = alt
-        self.qual = float(qual) if qual != '.' else 0.0
 
 
-def main(kwargs):
-    print(kwargs)
-    print(kwargs["threads"])
-    print(kwargs["fastq_bestand"])
-    time.sleep(1)
+class Tool:
+    def __init__(self, tool, **configs):
+        self.tool = tool
+        self.configs = configs
 
-    subprocess.run(
-        f"minimap2 -a -x map-ont -t {kwargs['threads']} -N {kwargs['N']} {kwargs['reference']} {kwargs['fastq_bestand']} > output.sam",
-        shell=True
-    )
+    def run(self, cmd):
+        subprocess.run(f"{self.tool} {cmd}", shell=True)
 
-    print("Minimap2")
 
-    subprocess.run(
-        "samtools view -b -o output.bam output.sam",
-        shell=True
-    )
+def run(kwargs):
+    minimap2 = Tool("minimap2", threads=kwargs["threads"], N=kwargs["N"], reference=kwargs["reference"], fastq=kwargs["fastq_bestand"])
+    samtools = Tool("samtools")
+    bcftools = Tool("bcftools", reference=kwargs["reference"], region=kwargs.get("region"))
 
-    subprocess.run(
-        "samtools sort output.bam > sorted_output.bam",
-        shell=True
-    )
+    minimap2.run(f"-a -x map-ont -t {minimap2.configs['threads']} -N {minimap2.configs['N']} {minimap2.configs['reference']} {minimap2.configs['fastq']} > output.sam")
 
-    subprocess.run(
-        "samtools index sorted_output.bam",
-        shell=True
-    )
+    samtools.run("view -b -o output.bam output.sam")
+    samtools.run("sort output.bam > sorted_output.bam")
+    samtools.run("index sorted_output.bam")
 
-    mpileup_cmd = f"bcftools mpileup sorted_output.bam -f {kwargs['reference']}"
-
-    if kwargs.get("region"):
-        mpileup_cmd += f" -r {kwargs['region']}"
-
+    mpileup_cmd = f"mpileup sorted_output.bam -f {bcftools.configs['reference']}"
+    if bcftools.configs.get("region"):
+        mpileup_cmd += f" -r {bcftools.configs['region']}"
     mpileup_cmd += " > bcftools_mpileup.bcf"
 
-    subprocess.run(
-        mpileup_cmd,
-        shell=True
-    )
-
-    subprocess.run(
-        "bcftools call -m -O v -o output.vcf bcftools_mpileup.bcf",
-        shell=True
-    )
-
-    print(f"done!")
+    bcftools.run(mpileup_cmd)
+    bcftools.run("call -m -O v -o output.vcf bcftools_mpileup.bcf")
+    bcftools.run("filter -i 'QUAL>=30' output.vcf -o output.vcf")
 
 
-"""
-dit hieronder is voor het later aanroepen van de code thx oscar papito
-kwargs = {
-    "fastq_bestand": "/homes/lbos5/ERR2165898.fastq",
-    "reference": "/homes/lbos5/Downloads/reference/ncbi_dataset/data/GCF_000006945.2/GCF_000006945.2_ASM694v2_genomic.fna",
-    "threads": 8,
-    "N": 5
-}
-
-main(kwargs)
-
-dit hieronder is voor het later aanroepen van de code thx oscar papito
-
-"""
-
-#backendv.py
-
-def vcf_naar_lijst(vcf_bestand):
-    with open(vcf_bestand, 'r') as vcf:
-        lijst = []
-        for line in vcf:
-            if line.startswith('#'):
+def lezen_vcf():
+    mutaties = {}
+    snip_tabel_info = {}
+    with open('output.vcf', 'r') as f:
+        for line in f:
+            line = line.strip()
+            if line.startswith("#"):
                 continue
-            regel = line.strip().split('\t')
-            mutatie = Tools(
-                chrom = regel[0],
-                pos = regel[1],
-                ref = regel[3],
-                alt = regel[4],
-                qual = regel[5]
-            )
-            lijst.append(mutatie)
-    return lijst
+            else:
+                splitline = line.split('\t')
+                if splitline[4]:
+                    qual = splitline[5]
+                    if qual != '.' and float(qual) >= 30:  # <-- fix here
+                        if splitline[1] not in mutaties:
+                            mutaties[splitline[1]] = 1
+                        else:
+                            mutaties[splitline[1]] += 1
+                if splitline[4] != '.':
+                    snip_tabel_info[splitline[1]] = [splitline[3], splitline[4]]
+    return mutaties, snip_tabel_info
 
-def relevante_mutatie(self):
-    return self.qual >= 30
-
-def filter_mutaties(mutatie_lijst):
-    relevante_mutaties = []
-    ruis = []
-    for mutatie in mutatie_lijst:
-        if relevante_mutatie(mutatie):
-            relevante_mutaties.append(mutatie)
-        else:
-            ruis.append(mutatie)
-    return relevante_mutaties, ruis
-
-def aantal_mutaties(aantal_mut_lijst):
-    locatie_bijhouden = {}
-
-    for mutatie in aantal_mut_lijst:
-        sleutel = (mutatie.chrom, mutatie.pos)
-        locatie_bijhouden[sleutel] = locatie_bijhouden.get(sleutel, 0) + 1
-
-    frequentie = []
-
-    for (chrom, pos), count in locatie_bijhouden.items():
-        locatie_data = {
-            'chrom': chrom,
-            'pos': pos,
-            'frequentie': count,
-        }
-        frequentie.append(locatie_data)
-
-    return frequentie
-
-
-def main():
-    mutatie_obj = vcf_naar_lijst("out.vcf")
-    print(f"Mutatie gevonden: {len(mutatie_obj)}")
-
-    nodige_mutatie, onnodige_mutatie = filter_mutaties(mutatie_obj)
-    print(f"Relevante mutatie: {len(nodige_mutatie)}")
-    print(f"Ruis mutatie: {len(onnodige_mutatie)}")
-
-    mutatie_frq = aantal_mutaties(mutatie_obj)
-    print(f"Mutatie frequntie: {len(mutatie_frq)}")
-
-main()
+def maken_plot(mutaties):
+    plt.bar(mutaties.keys(), mutaties.values())
+    plt.xticks(rotation=90)
+    plt.ylabel("Aantal mutaties")
+    plt.title("Mutaties met QUAL ≥ 30")
+    plt.tight_layout()
+    plt.savefig("mutaties.png")
