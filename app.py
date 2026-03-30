@@ -8,8 +8,8 @@ app.secret_key = "BINNANPORE"
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-FASTQ_BESTAND = os.path.join(BASE_DIR, "data", "ERR2165898.fastq")
-REFERENCE = os.path.join(BASE_DIR, "data", "GCF_000006945.2_ASM694v2_genomic.fna")
+FASTQ_BESTAND = os.path.join(BASE_DIR, "Data", "ERR2165898.fastq")
+REFERENCE = os.path.join(BASE_DIR, "Data", "reference", "GCF_000006945.2_ASM694v2_genomic.fna")
 
 @app.route('/')
 def input_output_page():
@@ -104,4 +104,4 @@ def output():
     )
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5002)

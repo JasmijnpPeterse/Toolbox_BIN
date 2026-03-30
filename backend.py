@@ -65,16 +65,16 @@ def run(kwargs):
 def lezen_vcf():
     mutaties = {}
     snip_tabel_info = {}
-    with open('output.vcf', 'r') as f:
+    with open('testoutput.vcf', 'r') as f:
         for line in f:
             line = line.strip()
             if line.startswith("#"):
                 continue
             else:
                 splitline = line.split('\t')
-                if splitline[3]:
+                if splitline[4]:
                     qual = splitline[5]
-                    if splitline[4] != '.' and float(qual) >= 30:  # <-- fix here
+                    if splitline[4] != '.':
                         if splitline[1] not in mutaties:
                             mutaties[splitline[1]] = 1
                         else:
@@ -89,4 +89,4 @@ def maken_plot(mutaties):
     plt.ylabel("Aantal mutaties")
     plt.title("Mutaties met QUAL ≥ 30")
     plt.tight_layout()
-    plt.savefig("mutaties.png")
+    plt.savefig("static/mutaties.png")
