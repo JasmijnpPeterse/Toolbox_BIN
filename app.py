@@ -6,8 +6,10 @@ from backend import lezen_vcf
 app = Flask(__name__)
 app.secret_key = "BINNANPORE"
 
-FASTQ_BESTAND = "/homes/lbos5/ERR2165898.fastq"
-REFERENCE = "/homes/lbos5/Downloads/reference/ncbi_dataset/data/GCF_000006945.2/GCF_000006945.2_ASM694v2_genomic.fna"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+FASTQ_BESTAND = os.path.join(BASE_DIR, "data", "ERR2165898.fastq")
+REFERENCE     = os.path.join(BASE_DIR, "data", "reference", "GCF_000006945.2_ASM694v2_genomic.fna")
 
 @app.route('/')
 def input_output_page():
