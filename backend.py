@@ -55,7 +55,7 @@ def run(kwargs):
         shell=True
     )
     subprocess.run(
-        "bctools filter -i QUAL>=30' output.vcf -o output.vcf",
+        "bcftools filter -i QUAL>=30' output.vcf -o output.vcf",
         shell=True
     )
 
@@ -72,9 +72,9 @@ def lezen_vcf():
                 continue
             else:
                 splitline = line.split('\t')
-                if splitline[4]:
+                if splitline[3]:
                     qual = splitline[5]
-                    if qual != '.' and float(qual) >= 30:  # <-- fix here
+                    if splitline[4] != '.' and float(qual) >= 30:  # <-- fix here
                         if splitline[1] not in mutaties:
                             mutaties[splitline[1]] = 1
                         else:
