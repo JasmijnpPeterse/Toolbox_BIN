@@ -54,20 +54,16 @@ def run(kwargs):
     )
 
     subprocess.run(
-        "bcftools call -m -O v -o output.vcf bcftools_mpileup.bcf",
-        shell=True
-    )
-    subprocess.run(
-        "bcftools filter -i 'QUAL>=30' output.vcf -o output.vcf",
-        shell=True
+    "bcftools call -m -O v bcftools_mpileup.bcf | bcftools filter -i 'QUAL>=30' -o output.vcf",
+    shell=True
     )
 
     print(f"done!")
 
-def lezen_vcf(self,mutaties):
+def lezen_vcf():
     mutaties = {}
     snps_tabel_info = {}
-    chroms = []
+    chroms = {}
     with open('output.vcf', 'r') as f:
         for line in f:
             splitline = line.strip().split('\t')
@@ -75,15 +71,18 @@ def lezen_vcf(self,mutaties):
                 continue
             if splitline[4] and splitline[4] != '.':
                 pos = splitline[1]
-                chrom = splitline[0]  # nieuw
-                chroms.append(chrom)  # nieuw
+                chrom = splitline[0]
                 mutaties[pos] = mutaties.get(pos, 0) + 1
+                chroms[chrom] = chroms.get(chrom, 0) + 1
                 snps_tabel_info[pos] = [splitline[3], splitline[4]]
     return mutaties, snps_tabel_info, chroms
 
-class Plot():
+class Plot:
     def __init__(self, mutaties):
         self.mutaties = mutaties
+
+    def __str__(self):
+        return f"Hoi HOI{self.mutaties}"
 
     def maken(self):
         fig, ax = plt.subplots()
@@ -92,19 +91,10 @@ class Plot():
         ax.set_ylabel("Aantal mutaties")
         ax.set_title("Mutaties met QUAL ≥ 30")
         fig.tight_layout()
-        return self._naar_web(fig)
+        return self.maken_plot(fig)
 
-    def _naar_web(self, fig):
-        figfile = BytesIO()
-        fig.savefig(figfile, format='png')
-        figfile.seek(0)
-        plt.close(fig)
-        return base64.b64encode(figfile.getvalue()).decode('ascii')
 
-    def maken_plot(mutaties):
-
-        plt.tight_layout()
-
+    def maken_plot(self, mutaties):
         pltfile = BytesIO()
         plt.savefig(pltfile, format='png')
         pltfile.seek(0)  # rewind to beginning of file

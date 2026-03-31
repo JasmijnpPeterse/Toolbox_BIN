@@ -1,12 +1,15 @@
 from flask import Flask,send_from_directory,redirect, render_template, request
 import os
+
+import backend
 from backend import run as run_pipeline
-from backend import lezen_vcf, maken_plot
+from backend import lezen_vcf, Plot
 from werkzeug.middleware.profiler import ProfilerMiddleware
 
 app = Flask(__name__)
 app.secret_key = "BINNANPORE"
-app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=['Toolbox_BIN'])
+app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=('app.py', 'backend.py'))
+
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -81,29 +84,41 @@ def output():
             'region': region,
             'tabel_snps': request.form.get('tabel_snps') is not None,
             'plot_mutaties': request.form.get('plot_mutaties') is not None,
-            'kwaliteitscore': request.form.get('kwaliteitscore') is not None,
-            'vcf_doc': request.form.get('vcf_doc') is not None
+            'chroms': request.form.get('plot_chroms') is not None
         }
 
         run_pipeline(kwargs)
         region_error_mutation = None
         region_error_snp = None
-        mutaties, snps_tabel_info = lezen_vcf()
+        mutaties, snps_tabel_info, chroms = lezen_vcf()
+        mutaties_png = None
+        chroms_png = None
+        region_error_chroms = None
 
         if kwargs['plot_mutaties']:
             if not mutaties:
-                    region_error_mutation = "Geen mutaties gevonden om te plotten."
+                region_error_mutation = "Geen mutaties gevonden om te plotten."
             else:
-                website_png = maken_plot(mutaties)
+                plot_data = Plot(mutaties)
+                mutaties_png = plot_data.maken_plot(mutaties)
+        if kwargs['chroms']:
+            if not chroms:
+                region_error_chroms = "Geen mutaties op een chromosoom gevonden"
+            else:
+                plot_data = Plot(chroms)
+                chroms_png = plot_data.maken_plot(chroms)
         if kwargs['tabel_snps']:
             if not snps_tabel_info:
                 region_error_snp="Geen snp's gevonden om in tabel te zetten"
         return render_template(
             'web.html',
             **kwargs,
+            mutatie_fig= mutaties_png,
+            chroms_fig=chroms_png,
             snps_tabel_info=snps_tabel_info,
             region_error_mutation=region_error_mutation,
-            region_error_snp=region_error_snp
+            region_error_snp=region_error_snp,
+            region_error_chroms=region_error_chroms
         )
 
 

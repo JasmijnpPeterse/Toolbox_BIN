@@ -18,8 +18,8 @@
                  <label for="plot_snps">Een tabel met al de snp's </label><br>
                  <input name="plot_mutaties" type="checkbox" id="mutations" value="mutations">
                  <label for="mutations">Een plot met de mutaties die vaker voorkomen</label><br>
-                 <input name="vcf_doc" type="checkbox" id="vcf_file" value="vcf_file">
-                 <label for="vcf_file">A vcf document met alle snp's en hun data</label><br>
+                 <input name="plot_chroms" type="checkbox" id="chroms" value="chroms">
+                 <label for="chroms">Een plot van de hoeveelheid mutaties per chromosoom</label><br>
 
                  <br>
                 <button type="submit" class="button btn_submit">Start Analyse</button>
@@ -70,7 +70,14 @@
                     {% if region_error_mutation %}
                         <p class="geen_mutaties">{{ region_error_mutation }}</p>
                     {% else %}
-                        <img src="static/mutaties.png" alt="Mutaties plot">
+                        <img src="data:image/png;base64,{{ mutatie_fig }}" alt="Mutaties plot">
+                    {% endif %}
+                {% endif %}
+                {% if chroms %}
+                    {% if region_error_chroms %}
+                        <p class="geen_mutaties">{{ region_error_chroms }}</p>
+                    {% else %}
+                        <img src="data:image/png;base64,{{ mutatie_fig }}" alt="Mutaties plot">
                     {% endif %}
                 {% endif %}
             </div>
