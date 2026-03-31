@@ -70,6 +70,10 @@ table th, table td {
 table th {
     background-color: #e9ecef;
 }
+.geen_mutaties{
+    color: red;
+    font-weight: bold;
+}
 
 footer {
     text-align: center;
