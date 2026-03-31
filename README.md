@@ -19,6 +19,7 @@ Wanneer u de link opent, klikt u op de groene knop Code. Hier staat de optie Dow
 En de BCFtools kun je downloaden via deze link:
 https://github.com/samtools/bcftools
 
+
 Wanneer u de link opent, klikt u op de groene knop Code. Hier staat de optie Download ZIP. Klik hierop om Minimap2 te downloaden. Het bestand verschijnt in uw Downloads-map als een ZIP-bestand. Pak dit bestand uit door op Extract here of Alles uitpakken te klikken. Zorg ervoor dat u de uitgepakte map niet in uw Downloads laat staan, omdat dit onoverzichtelijk wordt. Verplaats de map naar dezelfde map waar uw programma staat.
 
 Voor dit progamma moet je ook een referentie genoom bestand hebben dat geindext is.

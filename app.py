@@ -1,8 +1,5 @@
 from flask import Flask,send_from_directory,redirect, render_template, request
 import os
-
-from pylint.reporters.ureports.nodes import Title
-
 from backend import run as run_pipeline
 from backend import lezen_vcf
 from lib.DataModel import DataModel
@@ -13,8 +10,8 @@ app.secret_key = "BINNANPORE"
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-FASTQ_BESTAND = os.path.join(BASE_DIR, "data", "ERR2165898.fastq")
-REFERENCE     = os.path.join(BASE_DIR, "data", "reference", "GCF_000006945.2_ASM694v2_genomic.fna")
+FASTQ_BESTAND = os.path.join(BASE_DIR, "Data", "ERR2165898.fastq")
+REFERENCE = os.path.join(BASE_DIR, "Data", "reference", "GCF_000006945.2_ASM694v2_genomic.fna")
 
 @app.route('/')
 def input_output_page():
@@ -57,19 +54,21 @@ def output():
         region = None
         region_error = None
 
-        if chromosoom:
-            if startpunt and eindpunt:
-                try:
-                    if int(startpunt) >= int(eindpunt):
-                        region_error = "Startpositie moet kleiner zijn dan eindpositie."
-                    else:
+        if startpunt and eindpunt:
+            try:
+                if int(startpunt) >= int(eindpunt):
+                    region_error = "Startpositie moet kleiner zijn dan eindpositie."
+                else:
+                    if chromosoom:
                         region = f"{chromosoom}:{startpunt}-{eindpunt}"
-                except ValueError:
-                    region_error = "Start- en eindpositie moeten gehele getallen zijn."
-            elif startpunt or eindpunt:
-                region_error = "Vul zowel de start- als eindpositie in, of laat beide leeg."
-            else:
-                region = chromosoom
+                    else:
+                        region = f"{startpunt}-{eindpunt}"
+            except ValueError:
+                region_error = "Start- en eindpositie moeten gehele getallen zijn."
+        elif startpunt or eindpunt:
+            region_error = "Vul zowel de start- als eindpositie in, of laat beide leeg."
+        else:
+            region = chromosoom
 
         if region_error:
             return render_template('web.html', region_error=region_error)
@@ -86,7 +85,8 @@ def output():
             'vcf_doc': request.form.get('vcf_doc') is not None
         }
 
-        run_pipeline(kwags)
+        run_pipeline(kwargs)
+        mutaties, snps_tabel_info = lezen_vcf()  # ← was geïmporteerd maar nooit aangeroepen
 
         # get file from request object
         f = request.files['file']
@@ -107,4 +107,4 @@ def output():
     )
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5002)

@@ -57,29 +57,18 @@ def run(kwargs):
         "bcftools call -m -O v -o output.vcf bcftools_mpileup.bcf",
         shell=True
     )
+    subprocess.run(
+        "bcftools filter -i QUAL>=30' output.vcf -o output.vcf",
+        shell=True
+    )
 
     print(f"done!")
 
 
-"""
-dit hieronder is voor het later aanroepen van de code thx oscar papito
-kwargs = {
-    "fastq_bestand": "/homes/lbos5/ERR2165898.fastq",
-    "reference": "/homes/lbos5/Downloads/reference/ncbi_dataset/data/GCF_000006945.2/GCF_000006945.2_ASM694v2_genomic.fna",
-    "threads": 8,
-    "N": 5
-}
-
-main(kwargs)
-
-dit hieronder is voor het later aanroepen van de code thx oscar papito
-
-"""
-
 def lezen_vcf():
     mutaties = {}
     snip_tabel_info = {}
-    with open('empty.vcf', 'r') as f:
+    with open('testoutput.vcf', 'r') as f:
         for line in f:
             line = line.strip()
             if line.startswith("#"):
@@ -87,12 +76,14 @@ def lezen_vcf():
             else:
                 splitline = line.split('\t')
                 if splitline[4]:
-                    if float(splitline[5]) >= 30:
+                    qual = splitline[5]
+                    if splitline[4] != '.':
                         if splitline[1] not in mutaties:
                             mutaties[splitline[1]] = 1
                         else:
                             mutaties[splitline[1]] += 1
-                snip_tabel_info[splitline[1]] = [splitline[3], splitline[4]]
+                if splitline[4] != '.':
+                    snip_tabel_info[splitline[1]] = [splitline[3], splitline[4]]
     return mutaties, snip_tabel_info
 
 def maken_plot(mutaties):
@@ -101,6 +92,8 @@ def maken_plot(mutaties):
     plt.ylabel("Aantal mutaties")
     plt.title("Mutaties met QUAL ≥ 30")
     plt.tight_layout()
+    plt.savefig("static/mutaties.png")
+
     figfile = BytesIO()
     plt.savefig(figfile, format='png')
     figfile.seek(0)  # rewind to beginning of file

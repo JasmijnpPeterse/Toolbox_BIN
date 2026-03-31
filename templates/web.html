@@ -8,9 +8,9 @@
              <form action="web.html" method="POST" enctype="multipart/form-data">
                  <p class="ïnput_output">Wilt u een specifiek gen bekijken?</p>
                  <p>Zo ja vul hieronder het chromosoom, start en het eindpunt in, zo niet laat leeg</p>
-                 <input type="text" name="chromosoom">
-                 <input type="text" name="startpunt">
-                 <input type="text" name="eindpunt">
+                 <input type="text" name="chromosoom" placeholder ="Vul hier je chromosoom naam in.">
+                 <input type="text" name="startpunt" placeholder ="startpunt">
+                 <input type="text" name="eindpunt" placeholder = "eindpunt">
 
                  <p class="input_output">Wat wilt u als resultaat?</p>
 
@@ -18,8 +18,6 @@
                  <label for="plot_snps">Een tabel met al de snp's </label><br>
                  <input name="plot_mutaties" type="checkbox" id="mutations" value="mutations">
                  <label for="mutations">Een plot met de mutaties die vaker voorkomen</label><br>
-                 <input name="kwaliteitscore" type="checkbox" id="qualityscore" value="qualityscore">
-                 <label for="qualityscore">Een kwaliteitsscore</label><br>
                  <input name="vcf_doc" type="checkbox" id="vcf_file" value="vcf_file">
                  <label for="vcf_file">A vcf document met alle snp's en hun data</label><br>
 
@@ -40,7 +38,7 @@
                 <div class="resultaat">
 
                 {% if show_results %}
-                     <p>{{ uitslag.status }}</p>
+                    <p>Analyse voltooid.</p>
                 {% endif %}
 
                 {% if tabel_snps %}
