@@ -1,65 +1,35 @@
-import subprocess
-import time
 import matplotlib.pyplot as plt
+import subprocess
 
-class Tools():
-    def __init__(self, chrom, pos, ref, alt, qual):
-        self.chrom = chrom
-        self.pos = pos
-        self.ref = ref
-        self.alt = alt
-        self.qual = float(qual) if qual != '.' else 0.0
+
+class Tool:
+    def __init__(self, tool, **configs):
+        self.tool = tool
+        self.configs = configs
+
+    def run(self, cmd):
+        subprocess.run(f"{self.tool} {cmd}", shell=True)
+
 
 def run(kwargs):
-    print(kwargs)
-    print(kwargs["threads"])
-    print(kwargs["fastq_bestand"])
-    time.sleep(1)
+    minimap2 = Tool("minimap2", threads=kwargs["threads"], N=kwargs["N"], reference=kwargs["reference"], fastq=kwargs["fastq_bestand"])
+    samtools = Tool("samtools")
+    bcftools = Tool("bcftools", reference=kwargs["reference"], region=kwargs.get("region"))
 
-    subprocess.run(
-        f"minimap2 -a -x map-ont -t {kwargs['threads']} -N {kwargs['N']} {kwargs['reference']} {kwargs['fastq_bestand']} > output.sam",
-        shell=True
-    )
+    minimap2.run(f"-a -x map-ont -t {minimap2.configs['threads']} -N {minimap2.configs['N']} {minimap2.configs['reference']} {minimap2.configs['fastq']} > output.sam")
 
-    print("Minimap2")
+    samtools.run("view -b -o output.bam output.sam")
+    samtools.run("sort output.bam > sorted_output.bam")
+    samtools.run("index sorted_output.bam")
 
-    subprocess.run(
-        "samtools view -b -o output.bam output.sam",
-        shell=True
-    )
-
-    subprocess.run(
-        "samtools sort output.bam > sorted_output.bam",
-        shell=True
-    )
-
-    subprocess.run(
-        "samtools index sorted_output.bam",
-        shell=True
-    )
-
-    mpileup_cmd = f"bcftools mpileup sorted_output.bam -f {kwargs['reference']}"
-
-    if kwargs.get("region"):
-        mpileup_cmd += f" -r {kwargs['region']}"
-
+    mpileup_cmd = f"mpileup sorted_output.bam -f {bcftools.configs['reference']}"
+    if bcftools.configs.get("region"):
+        mpileup_cmd += f" -r {bcftools.configs['region']}"
     mpileup_cmd += " > bcftools_mpileup.bcf"
 
-    subprocess.run(
-        mpileup_cmd,
-        shell=True
-    )
-
-    subprocess.run(
-        "bcftools call -m -O v -o output.vcf bcftools_mpileup.bcf",
-        shell=True
-    )
-    subprocess.run(
-        "bcftools filter -i QUAL>=30' output.vcf -o output.vcf",
-        shell=True
-    )
-
-    print(f"done!")
+    bcftools.run(mpileup_cmd)
+    bcftools.run("call -m -O v -o output.vcf bcftools_mpileup.bcf")
+    bcftools.run("filter -i 'QUAL>=30' output.vcf -o output.vcf")
 
 
 def lezen_vcf():

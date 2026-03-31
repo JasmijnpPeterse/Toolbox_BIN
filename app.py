@@ -71,7 +71,7 @@ def output():
         if region_error:
             return render_template('web.html', region_error=region_error)
 
-        kwargs = {
+        kwags = {
             'fastq_bestand': FASTQ_BESTAND,
             'reference': REFERENCE,
             'threads': 8,
