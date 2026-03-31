@@ -2,11 +2,11 @@ from flask import Flask,send_from_directory,redirect, render_template, request
 import os
 from backend import run as run_pipeline
 from backend import lezen_vcf, maken_plot
-from lib.DataModel import DataModel
-
+from werkzeug.middleware.profiler import ProfilerMiddleware
 
 app = Flask(__name__)
 app.secret_key = "BINNANPORE"
+app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=['Toolbox_BIN'])
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -86,24 +86,24 @@ def output():
         }
 
         run_pipeline(kwargs)
+        region_error_mutation = None
+        region_error_snp = None
         mutaties, snps_tabel_info = lezen_vcf()
 
         if kwargs['plot_mutaties']:
             if not mutaties:
-                return render_template('web.html', mutaties=None,
-                    region_error = "Geen mutaties gevonden om te plotten.")
+                    region_error_mutation = "Geen mutaties gevonden om te plotten."
             else:
-                maken_plot(mutaties)
+                website_png = maken_plot(mutaties)
         if kwargs['tabel_snps']:
             if not snps_tabel_info:
-                return render_template('web.html', snps_tabel_info=None,
-                    region_error="Geen snp's gevonden om in tabel te zetten")
-
+                region_error_snp="Geen snp's gevonden om in tabel te zetten"
         return render_template(
             'web.html',
             **kwargs,
-            mutaties=mutaties,
             snps_tabel_info=snps_tabel_info,
+            region_error_mutation=region_error_mutation,
+            region_error_snp=region_error_snp
         )
 
 

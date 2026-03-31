@@ -42,37 +42,36 @@
                 {% endif %}
 
                 {% if tabel_snps %}
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Positie</th>
-                                <th>REF</th>
-                                <th>ALT</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for positie, waarden in snps_tabel_info.items() %}
+                    {% if region_error_snp %}
+                        <p class="geen_mutaties">{{ region_error_snp }}</p>
+                    {% else %}
+                        <table>
+                            <thead>
                                 <tr>
-                                    <td>{{ positie }}</td>
-                                    <td>{{ waarden[0] }}</td>
-                                    <td>{{ waarden[1] }}</td>
+                                    <th>Positie</th>
+                                    <th>REF</th>
+                                    <th>ALT</th>
                                 </tr>
-                                {% endfor %}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {% for positie, waarden in snps_tabel_info.items() %}
+                                    <tr>
+                                        <td>{{ positie }}</td>
+                                        <td>{{ waarden[0] }}</td>
+                                        <td>{{ waarden[1] }}</td>
+                                    </tr>
+                                    {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
                 {% endif %}
 
                 {% if plot_mutaties %}
-                    <p>Staaftabel van de mutaties en op welke plekken deze voorkomen en hoelaat</p>
-                    <img src="data:image/png;base64,{{ results }}" alt="Mutaties plot">
-                {% endif %}
-
-                {% if kwaliteitscore %}
-                    <p>Kwaliteitsscore: 42 Q</p>
-                {% endif %}
-
-                {% if vcf_doc %}
-                    <p>Download VCF bestand...</p>
+                    {% if region_error_mutation %}
+                        <p class="geen_mutaties">{{ region_error_mutation }}</p>
+                    {% else %}
+                        <img src="static/mutaties.png" alt="Mutaties plot">
+                    {% endif %}
                 {% endif %}
             </div>
         </div>

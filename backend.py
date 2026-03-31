@@ -58,43 +58,56 @@ def run(kwargs):
         shell=True
     )
     subprocess.run(
-        "bcftools filter -i QUAL>=30' output.vcf -o output.vcf",
+        "bcftools filter -i 'QUAL>=30' output.vcf -o output.vcf",
         shell=True
     )
 
     print(f"done!")
 
-
-def lezen_vcf():
+def lezen_vcf(self,mutaties):
     mutaties = {}
-    snip_tabel_info = {}
-    with open('testoutput.vcf', 'r') as f:
+    snps_tabel_info = {}
+    chroms = []
+    with open('output.vcf', 'r') as f:
         for line in f:
-            line = line.strip()
+            splitline = line.strip().split('\t')
             if line.startswith("#"):
                 continue
-            else:
-                splitline = line.split('\t')
-                if splitline[4]:
-                    qual = splitline[5]
-                    if splitline[4] != '.':
-                        if splitline[1] not in mutaties:
-                            mutaties[splitline[1]] = 1
-                        else:
-                            mutaties[splitline[1]] += 1
-                if splitline[4] != '.':
-                    snip_tabel_info[splitline[1]] = [splitline[3], splitline[4]]
-    return mutaties, snip_tabel_info
+            if splitline[4] and splitline[4] != '.':
+                pos = splitline[1]
+                chrom = splitline[0]  # nieuw
+                chroms.append(chrom)  # nieuw
+                mutaties[pos] = mutaties.get(pos, 0) + 1
+                snps_tabel_info[pos] = [splitline[3], splitline[4]]
+    return mutaties, snps_tabel_info, chroms
 
-def maken_plot(mutaties):
-    plt.bar(mutaties.keys(), mutaties.values())
-    plt.xticks(rotation=90)
-    plt.ylabel("Aantal mutaties")
-    plt.title("Mutaties met QUAL ≥ 30")
-    plt.tight_layout()
-    plt.savefig("static/mutaties.png")
+class Plot():
+    def __init__(self, mutaties):
+        self.mutaties = mutaties
 
-    figfile = BytesIO()
-    plt.savefig(figfile, format='png')
-    figfile.seek(0)  # rewind to beginning of file
-    website_png = base64.b64encode(figfile.getvalue()).decode('ascii')
+    def maken(self):
+        fig, ax = plt.subplots()
+        ax.bar(self.mutaties(), self.mutaties.values())
+        ax.set_xticklabels(self.mutaties.keys(), rotation=90)
+        ax.set_ylabel("Aantal mutaties")
+        ax.set_title("Mutaties met QUAL ≥ 30")
+        fig.tight_layout()
+        return self._naar_web(fig)
+
+    def _naar_web(self, fig):
+        figfile = BytesIO()
+        fig.savefig(figfile, format='png')
+        figfile.seek(0)
+        plt.close(fig)
+        return base64.b64encode(figfile.getvalue()).decode('ascii')
+
+    def maken_plot(mutaties):
+
+        plt.tight_layout()
+
+        pltfile = BytesIO()
+        plt.savefig(pltfile, format='png')
+        pltfile.seek(0)  # rewind to beginning of file
+        website_png = base64.b64encode(pltfile.getvalue()).decode('ascii')
+
+        return website_png
