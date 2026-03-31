@@ -1,7 +1,12 @@
 from flask import Flask,send_from_directory,redirect, render_template, request
 import os
+
+from pylint.reporters.ureports.nodes import Title
+
 from backend import run as run_pipeline
 from backend import lezen_vcf
+from lib.DataModel import DataModel
+
 
 app = Flask(__name__)
 app.secret_key = "BINNANPORE"
@@ -83,7 +88,16 @@ def output():
 
         run_pipeline(kwags)
 
-        return render_template('web.html', **kwags)
+        # get file from request object
+        f = request.files['file']
+
+        # Creates a DataModel object and calls the bar.plot() method passing the file from the file upload
+        x = DataModel()
+        results = x.bar_plot(f)
+
+        # resulting barplot is passed to the HTML_visualization_template.html rendered page
+
+        return render_template('web.html', **kwags, results=results, Title='In/output_page')
 
     return render_template('web.html',
         tabel_snps=False,

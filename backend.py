@@ -1,6 +1,8 @@
 import subprocess
 import time
 import matplotlib.pyplot as plt
+from io import BytesIO
+import base64
 
 class Tools():
     def __init__(self, chrom, pos, ref, alt, qual):
@@ -99,7 +101,10 @@ def maken_plot(mutaties):
     plt.ylabel("Aantal mutaties")
     plt.title("Mutaties met QUAL ≥ 30")
     plt.tight_layout()
-    plt.savefig("mutaties.png")
+    figfile = BytesIO()
+    plt.savefig(figfile, format='png')
+    figfile.seek(0)  # rewind to beginning of file
+    website_png = base64.b64encode(figfile.getvalue()).decode('ascii')
 
 def vcf_naar_lijst(vcf_bestand):
     with open(vcf_bestand, 'r') as vcf:
