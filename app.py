@@ -1,7 +1,7 @@
 from flask import Flask,send_from_directory,redirect, render_template, request
 import os
 from backend import run as run_pipeline
-from backend import lezen_vcf
+from backend import lezen_vcf, maken_plot
 from lib.DataModel import DataModel
 
 
@@ -73,7 +73,7 @@ def output():
         if region_error:
             return render_template('web.html', region_error=region_error)
 
-        kwags = {
+        kwargs = {
             'fastq_bestand': FASTQ_BESTAND,
             'reference': REFERENCE,
             'threads': 8,
@@ -86,18 +86,26 @@ def output():
         }
 
         run_pipeline(kwargs)
-        mutaties, snps_tabel_info = lezen_vcf()  # ← was geïmporteerd maar nooit aangeroepen
+        mutaties, snps_tabel_info = lezen_vcf()
 
-        # get file from request object
-        f = request.files['file']
+        if kwargs['plot_mutaties']:
+            if not mutaties:
+                return render_template('web.html', mutaties=None,
+                    region_error = "Geen mutaties gevonden om te plotten.")
+            else:
+                maken_plot(mutaties)
+        if kwargs['tabel_snps']:
+            if not snps_tabel_info:
+                return render_template('web.html', snps_tabel_info=None,
+                    region_error="Geen snp's gevonden om in tabel te zetten")
 
-        # Creates a DataModel object and calls the bar.plot() method passing the file from the file upload
-        x = DataModel()
-        results = x.bar_plot(f)
+        return render_template(
+            'web.html',
+            **kwargs,
+            mutaties=mutaties,
+            snps_tabel_info=snps_tabel_info,
+        )
 
-        # resulting barplot is passed to the HTML_visualization_template.html rendered page
-
-        return render_template('web.html', **kwags, results=results, Title='In/output_page')
 
     return render_template('web.html',
         tabel_snps=False,
