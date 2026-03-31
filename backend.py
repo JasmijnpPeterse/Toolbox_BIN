@@ -30,8 +30,7 @@ def run(kwargs):
     mpileup_cmd += " > bcftools_mpileup.bcf"
 
     bcftools.run(mpileup_cmd)
-    bcftools.run("call -m -O v -o output.vcf bcftools_mpileup.bcf")
-    bcftools.run("filter -i 'QUAL>=30' output.vcf -o output.vcf")
+    bcftools.run("call -m -O v -o output.vcf bcftools_mpileup.bcf| bcftools filter -i 'QUAL>=30' -o output.vcf")
 
 def lezen_vcf():
     mutaties = {}

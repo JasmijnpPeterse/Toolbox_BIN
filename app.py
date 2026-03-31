@@ -1,14 +1,12 @@
 from flask import Flask,send_from_directory,redirect, render_template, request
 import os
-
-import backend
 from backend import run as run_pipeline
 from backend import lezen_vcf, Plot
 from werkzeug.middleware.profiler import ProfilerMiddleware
 
 app = Flask(__name__)
 app.secret_key = "BINNANPORE"
-app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=('app.py', 'backend.py'))
+# app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=('app.py', 'backend.py'))
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -76,7 +74,7 @@ def output():
         if region_error:
             return render_template('web.html', region_error=region_error)
 
-        kwags = {
+        kwargs = {
             'fastq_bestand': FASTQ_BESTAND,
             'reference': REFERENCE,
             'threads': 8,
