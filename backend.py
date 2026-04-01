@@ -1,4 +1,6 @@
 import matplotlib.pyplot as plt
+from io import BytesIO
+import base64
 import subprocess
 
 
@@ -6,7 +8,10 @@ class Tool:
     def __init__(self, tool, **configs):
         self.tool = tool
         self.configs = configs
-
+        
+    def __str__(self):
+        return f"Tool: {self.tool}, configs: {self.configs}"
+    
     def run(self, cmd):
         subprocess.run(f"{self.tool} {cmd}", shell=True)
 
@@ -28,35 +33,46 @@ def run(kwargs):
     mpileup_cmd += " > bcftools_mpileup.bcf"
 
     bcftools.run(mpileup_cmd)
-    bcftools.run("call -m -O v -o output.vcf bcftools_mpileup.bcf")
-    bcftools.run("filter -i 'QUAL>=30' output.vcf -o output.vcf")
-
+    bcftools.run("call -m -O v -o output.vcf bcftools_mpileup.bcf| bcftools filter -i 'QUAL>=30' -o output.vcf")
 
 def lezen_vcf():
     mutaties = {}
-    snip_tabel_info = {}
+    snps_tabel_info = {}
+    chroms = {}
     with open('output.vcf', 'r') as f:
         for line in f:
-            line = line.strip()
+            splitline = line.strip().split('\t')
             if line.startswith("#"):
                 continue
-            else:
-                splitline = line.split('\t')
-                if splitline[4]:
-                    qual = splitline[5]
-                    if qual != '.' and float(qual) >= 30:  # <-- fix here
-                        if splitline[1] not in mutaties:
-                            mutaties[splitline[1]] = 1
-                        else:
-                            mutaties[splitline[1]] += 1
-                if splitline[4] != '.':
-                    snip_tabel_info[splitline[1]] = [splitline[3], splitline[4]]
-    return mutaties, snip_tabel_info
+            if splitline[4] and splitline[4] != '.':
+                pos = splitline[1]
+                chrom = splitline[0]
+                mutaties[pos] = mutaties.get(pos, 0) + 1
+                chroms[chrom] = chroms.get(chrom, 0) + 1
+                snps_tabel_info[pos] = [splitline[3], splitline[4]]
+    return mutaties, snps_tabel_info, chroms
 
-def maken_plot(mutaties):
-    plt.bar(mutaties.keys(), mutaties.values())
-    plt.xticks(rotation=90)
-    plt.ylabel("Aantal mutaties")
-    plt.title("Mutaties met QUAL ≥ 30")
-    plt.tight_layout()
-    plt.savefig("mutaties.png")
+class Plot:
+    def __init__(self, mutaties):
+        self.mutaties = mutaties
+
+    def __str__(self):
+        return f"Hoi HOI{self.mutaties}"
+
+    def maken(self):
+        fig, ax = plt.subplots()
+        ax.bar(self.mutaties(), self.mutaties.values())
+        ax.set_xticklabels(self.mutaties.keys(), rotation=90)
+        ax.set_ylabel("Aantal mutaties")
+        ax.set_title("Mutaties met QUAL ≥ 30")
+        fig.tight_layout()
+        return self.maken_plot(fig)
+
+
+    def maken_plot(self, mutaties):
+        pltfile = BytesIO()
+        plt.savefig(pltfile, format='png')
+        pltfile.seek(0)  # rewind to beginning of file
+        website_png = base64.b64encode(pltfile.getvalue()).decode('ascii')
+
+        return website_png
