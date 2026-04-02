@@ -53,7 +53,7 @@ def test_resultaat(client, fake_vcf):
                            data={"tabel_snps": "tabel_snps"})
     assert result.status_code == 200
 
-def test_ontbrekende_info(tmp_path, fake_vcf):
+def test_ontbrekende_info(fake_vcf):
     """
     Check of de website nog steeds resultaat geeft bij ontbrekende score (de "." in VCF).
     """
@@ -87,7 +87,7 @@ def test_class():
     assert tool.configs["threads"] == 8
     assert tool.configs["N"] == 5
 
-def test_tools(tmp_path, fake_vcf):
+def test_tools(tmp_path):
     """
     Check of de tools goed werkt.
     """
