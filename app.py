@@ -1,12 +1,18 @@
-from flask import Flask,send_from_directory,redirect, url_for, render_template_string, render_template, request, session
+from flask import Flask,send_from_directory,redirect, render_template, request
 import os
-from backend import main as run_pipeline
+from backend import run as run_pipeline
+from backend import lezen_vcf, Plot
+from werkzeug.middleware.profiler import ProfilerMiddleware
 
 app = Flask(__name__)
 app.secret_key = "BINNANPORE"
+# app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=('app.py', 'backend.py'))
 
-FASTQ_BESTAND = "/homes/lbos5/ERR2165898.fastq"
-REFERENCE = "/homes/lbos5/Downloads/reference/ncbi_dataset/data/GCF_000006945.2/GCF_000006945.2_ASM694v2_genomic.fna"
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+FASTQ_BESTAND = os.path.join(BASE_DIR, "Data", "ERR2165898.fastq")
+REFERENCE = os.path.join(BASE_DIR, "Data", "reference", "GCF_000006945.2_ASM694v2_genomic.fna")
 
 @app.route('/')
 def input_output_page():
@@ -49,24 +55,26 @@ def output():
         region = None
         region_error = None
 
-        if chromosoom:
-            if startpunt and eindpunt:
-                try:
-                    if int(startpunt) >= int(eindpunt):
-                        region_error = "Startpositie moet kleiner zijn dan eindpositie."
-                    else:
+        if startpunt and eindpunt:
+            try:
+                if int(startpunt) >= int(eindpunt):
+                    region_error = "Startpositie moet kleiner zijn dan eindpositie."
+                else:
+                    if chromosoom:
                         region = f"{chromosoom}:{startpunt}-{eindpunt}"
-                except ValueError:
-                    region_error = "Start- en eindpositie moeten gehele getallen zijn."
-            elif startpunt or eindpunt:
-                region_error = "Vul zowel de start- als eindpositie in, of laat beide leeg."
-            else:
-                region = chromosoom
+                    else:
+                        region = f"{startpunt}-{eindpunt}"
+            except ValueError:
+                region_error = "Start- en eindpositie moeten gehele getallen zijn."
+        elif startpunt or eindpunt:
+            region_error = "Vul zowel de start- als eindpositie in, of laat beide leeg."
+        else:
+            region = chromosoom
 
         if region_error:
             return render_template('web.html', region_error=region_error)
 
-        kwags = {
+        kwargs = {
             'fastq_bestand': FASTQ_BESTAND,
             'reference': REFERENCE,
             'threads': 8,
@@ -74,13 +82,43 @@ def output():
             'region': region,
             'tabel_snps': request.form.get('tabel_snps') is not None,
             'plot_mutaties': request.form.get('plot_mutaties') is not None,
-            'kwaliteitscore': request.form.get('kwaliteitscore') is not None,
-            'vcf_doc': request.form.get('vcf_doc') is not None
+            'chroms': request.form.get('plot_chroms') is not None
         }
 
-        run_pipeline(kwags)
+        run_pipeline(kwargs)
+        region_error_mutation = None
+        region_error_snp = None
+        mutaties, snps_tabel_info, chroms = lezen_vcf()
+        mutaties_png = None
+        chroms_png = None
+        region_error_chroms = None
 
-        return render_template('web.html', **kwags)
+        if kwargs['plot_mutaties']:
+            if not mutaties:
+                region_error_mutation = "Geen mutaties gevonden om te plotten."
+            else:
+                plot_data = Plot(mutaties)
+                mutaties_png = plot_data.maken_plot(mutaties)
+        if kwargs['chroms']:
+            if not chroms:
+                region_error_chroms = "Geen mutaties op een chromosoom gevonden"
+            else:
+                plot_data = Plot(chroms)
+                chroms_png = plot_data.maken_plot(chroms)
+        if kwargs['tabel_snps']:
+            if not snps_tabel_info:
+                region_error_snp="Geen snp's gevonden om in tabel te zetten"
+        return render_template(
+            'web.html',
+            **kwargs,
+            mutatie_fig= mutaties_png,
+            chroms_fig=chroms_png,
+            snps_tabel_info=snps_tabel_info,
+            region_error_mutation=region_error_mutation,
+            region_error_snp=region_error_snp,
+            region_error_chroms=region_error_chroms
+        )
+
 
     return render_template('web.html',
         tabel_snps=False,
@@ -90,4 +128,4 @@ def output():
     )
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5002)

@@ -5,7 +5,13 @@ import subprocess
 
 
 class Tool:
+    """
+    Class om tools aan te maken
+    """
     def __init__(self, tool, **configs):
+        """
+        __innit__ laat de gebruiker de naam van de tool + meerdere configuraties invullen
+        """
         self.tool = tool
         self.configs = configs
         
@@ -13,10 +19,16 @@ class Tool:
         return f"Tool: {self.tool}, configs: {self.configs}"
     
     def run(self, cmd):
+        """
+        Zorgt ervoor dat de tool in de terminal wordt gerunned
+        """
         subprocess.run(f"{self.tool} {cmd}", shell=True)
 
 
 def run(kwargs):
+    """
+    maakt tools aan en runt ze in de terminal
+    """
     minimap2 = Tool("minimap2", threads=kwargs["threads"], N=kwargs["N"], reference=kwargs["reference"], fastq=kwargs["fastq_bestand"])
     samtools = Tool("samtools")
     bcftools = Tool("bcftools", reference=kwargs["reference"], region=kwargs.get("region"))
