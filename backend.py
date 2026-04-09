@@ -1,7 +1,14 @@
-import matplotlib.pyplot as plt
+"""
+Bio-informatica nanopore sequencing analuse
+
+Autors: Lucas Bos, Jasmijn Peterse, Vani Rembet
+Version: 1.0
+Date: 30/03 - 10/04
+"""
 from io import BytesIO
 import base64
 import subprocess
+import matplotlib.pyplot as plt
 
 
 class Tool:
@@ -14,6 +21,9 @@ class Tool:
         """
         self.tool = tool
         self.configs = configs
+
+    def __str__(self):
+        return f"Tool: {self.tool}, configs: {self.configs}"
 
     def run(self, cmd):
         """
@@ -45,15 +55,20 @@ def run(kwargs):
     bcftools.run("call -m -O v -o output.vcf bcftools_mpileup.bcf| bcftools filter -i 'QUAL>=30' -o output.vcf")
 
 def lezen_vcf():
+    """
+    Functie voor het inlezen van het output vcf file
+
+    :return: mutaties(dict), snps_tabel_info(dict), chroms(dict)
+    """
     mutaties = {}
     snps_tabel_info = {}
     chroms = {}
-    with open('output.vcf', 'r') as f:
+    with open("output.vcf", "r", encoding="utf-8") as f:
         for line in f:
-            splitline = line.strip().split('\t')
+            splitline = line.strip().split("\t")
             if line.startswith("#"):
                 continue
-            if splitline[4] and splitline[4] != '.':
+            if splitline[4] and splitline[4] != ".":
                 pos = splitline[1]
                 chrom = splitline[0]
                 mutaties[pos] = mutaties.get(pos, 0) + 1
@@ -62,26 +77,55 @@ def lezen_vcf():
     return mutaties, snps_tabel_info, chroms
 
 class Plot:
+    """
+    Class voor het maken van een plot
+    """
     def __init__(self, mutaties):
+        """
+        Initialiseert het object met een lijst van mutaties.
+
+        :param mutaties: (list) lijst van mutaties
+        """
         self.mutaties = mutaties
 
     def __str__(self):
-        return f"Hoi HOI{self.mutaties}"
+        """
+        Geeft een leesbare string representatie van het object.
+
+        :return: (str) string met de mutaties
+        """
+        return f"Mutaties is dit:{self.mutaties}"
+
 
     def maken(self):
+        """
+        Functie voor het maken van het plot
+        :return: Object(plot)
+        """
         fig, ax = plt.subplots()
-        ax.bar(self.mutaties(), self.mutaties.values())
-        ax.set_xticklabels(self.mutaties.keys(), rotation=90)
-        ax.set_ylabel("Aantal mutaties")
-        ax.set_title("Mutaties met QUAL ≥ 30")
+
+        keys = list(self.mutaties.keys())
+        values = list(self.mutaties.values())
+
+        ax.bar(keys, values)
+        ax.set_xticks(range(len(keys)))
+        ax.set_xticklabels(keys, rotation=90)
+
+        ax.set_ylabel("Mutaties")
+        ax.set_title("Mutaties in reads")
         fig.tight_layout()
-        return self.maken_plot(fig)
+
+        return self.opslaan_plot(fig)
 
 
-    def maken_plot(self, mutaties):
+    def opslaan_plot(self, fig):
+        """
+        Functie voor het opslaan van het plot
+        :return website_png(str) string met base64 karakters van de plot
+        """
         pltfile = BytesIO()
-        plt.savefig(pltfile, format='png')
+        plt.savefig(pltfile, format="png")
         pltfile.seek(0)  # rewind to beginning of file
-        website_png = base64.b64encode(pltfile.getvalue()).decode('ascii')
+        website_png = base64.b64encode(pltfile.getvalue()).decode("ascii")
 
         return website_png
