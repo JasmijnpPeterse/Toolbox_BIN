@@ -71,6 +71,7 @@
                         <p class="geen_mutaties">{{ region_error_mutation }}</p>
                     {% else %}
                         <img src="data:image/png;base64,{{ mutatie_fig }}" alt="Mutaties plot">
+                        <p><small>Aantal gedetecteerde mutaties per positie in het genoom</small></p>
                     {% endif %}
                 {% endif %}
                 {% if chroms %}
@@ -79,6 +80,10 @@
                     {% else %}
                         <img src="data:image/png;base64,{{ chroms_fig }}" alt="Chromosomen plot">
                     {% endif %}
+                {% endif %}
+
+                {% if download_pad %}
+                    <p>Het resultaat is opgeslagen op {{ download_pad }}</p>
                 {% endif %}
             </div>
         </div>
