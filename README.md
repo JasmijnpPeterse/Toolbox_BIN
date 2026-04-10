@@ -1,31 +1,157 @@
-# Toolbox_BIN
+# Geautomatiseerde Nanopore Analyse Pipeline
 
-De tools die nodig zijn om ons programma te runnen zijn: Minimap2, Samtools en BCFtools.
+Bio-informatica project voor DNA variant detectie via Nanopore-sequencing.  
+Ontwikkeld door: Lucas Bos, Jasmijn Peterse, Vani Rembet
 
-Voordat u begint met het downloaden van de tools, zorg ervoor dat u een map hebt waar het programma in staat. Geef deze map een naam waarmee u de map makkelijk terug kunt vinden. Alle tools die u downloadt plaatst u uiteindelijk in dezelfde map als het programma.
+---
 
-Mininmap2 kunt u downloaden via deze link:
-https://github.com/lh3/minimap2
+## Vereisten
 
-Wanneer u de link opent, klikt u op de groene knop Code. Hier staat de optie Download ZIP. Klik hierop om Minimap2 te downloaden. Het bestand verschijnt in uw Downloads-map als een ZIP-bestand. Pak dit bestand uit door op Extract here of Alles uitpakken te klikken. Zorg ervoor dat u de uitgepakte map niet in uw Downloads laat staan, omdat dit onoverzichtelijk wordt. Verplaats de map naar dezelfde map waar uw programma staat.
+### Software
+- Python 3.8 of hoger
+- pip (Python pakketbeheer)
+- Minimap2
+- SAMtools
+- BCFtools
 
+### Python-pakketten
+Installeer de benodigde Python-pakketten met:
 
-Samtools kun je downloaden via deze link:
-https://github.com/samtools/samtools
+```bash
+pip install flask matplotlib werkzeug
+```
 
-Wanneer u de link opent, klikt u op de groene knop Code. Hier staat de optie Download ZIP. Klik hierop om Minimap2 te downloaden. Het bestand verschijnt in uw Downloads-map als een ZIP-bestand. Pak dit bestand uit door op Extract here of Alles uitpakken te klikken. Zorg ervoor dat u de uitgepakte map niet in uw Downloads laat staan, omdat dit onoverzichtelijk wordt. Verplaats de map naar dezelfde map waar uw programma staat.
+---
 
+## Installatie van tools
 
-En de BCFtools kun je downloaden via deze link:
-https://github.com/samtools/bcftools
+Zorg ervoor dat u een overzichtelijke map heeft voor het project. Plaats alle tools en data in dezelfde map.
 
-Wanneer u de link opent, klikt u op de groene knop Code. Hier staat de optie Download ZIP. Klik hierop om Minimap2 te downloaden. Het bestand verschijnt in uw Downloads-map als een ZIP-bestand. Pak dit bestand uit door op Extract here of Alles uitpakken te klikken. Zorg ervoor dat u de uitgepakte map niet in uw Downloads laat staan, omdat dit onoverzichtelijk wordt. Verplaats de map naar dezelfde map waar uw programma staat.
+### 1. Minimap2
 
-Voor dit progamma moet je ook een referentie genoom bestand hebben dat geindext is.
-Op de web pagina staan 3 linkjes naar NIH voor de referentie genomen, deze moeten nog geindext worden. Als u op de link van het refentie genoom dat u wilt gebruiken hebt geklikt, zou u een download knop moeten staan. Klik hierop en zorg ervoor dat alleen het vakje GENOME SEQUENCES (FASTA) is aangeklikt, en klik op download. 
-Nu dat u het referentie genoom op uw apparaat heeft staan, plaats het in dezelfde map als waar de tools staan. 
-Als de voorgaande stappen zijn gelukt kunt u naar de terminal gaan. Hier moet u via ``cd locatie`` naar de map gaan waar het referentie genoom staat. Zodra u hier bent moet u het volgende argument in plaatsen om het referentie genoom te indexen:
+Download via: https://github.com/lh3/minimap2
 
-``minimap2 -d naam_reference_genome.mmi nieuwe_naam_voor_document_met_index.fa``
+1. Klik op de groene knop **Code** → **Download ZIP**
+2. Pak het ZIP-bestand uit
+3. Verplaats de uitgepakte map naar uw projectmap
+4. Compileer de tool via de terminal:
 
+```bash
+cd minimap2
+make
+```
 
+### 2. SAMtools
+
+Download via: https://github.com/samtools/samtools
+
+1. Klik op de groene knop **Code** → **Download ZIP**
+2. Pak het ZIP-bestand uit en verplaats naar uw projectmap
+3. Compileer via de terminal:
+
+```bash
+cd samtools
+./configure
+make
+make install
+```
+
+### 3. BCFtools
+
+Download via: https://github.com/samtools/bcftools
+
+1. Klik op de groene knop **Code** → **Download ZIP**
+2. Pak het ZIP-bestand uit en verplaats naar uw projectmap
+3. Compileer via de terminal:
+
+```bash
+cd bcftools
+./configure
+make
+make install
+```
+
+> **Tip:** Controleer na installatie of de tools werken door `minimap2 --version`, `samtools --version` en `bcftools --version` in de terminal uit te voeren.
+
+---
+
+## Data instellen
+
+Zorg dat de volgende bestanden aanwezig zijn in de `Data/` map:
+
+```
+Data/
+├── ERR2165898.fastq              # Nanopore FASTQ-bestand
+└── reference/
+    └── GCF_000006945.2_ASM694v2_genomic.fna  # Referentiegenoom
+```
+
+De paden naar deze bestanden zijn ingesteld in `app.py`. Pas ze aan als u andere bestanden gebruikt:
+
+```python
+FASTQ_BESTAND = os.path.join(BASE_DIR, "Data", "ERR2165898.fastq")
+REFERENCE = os.path.join(BASE_DIR, "Data", "reference", "GCF_000006945.2_ASM694v2_genomic.fna")
+```
+
+---
+
+## De applicatie starten
+
+Start de webapplicatie via de terminal:
+
+```bash
+python app.py
+```
+
+De applicatie is daarna bereikbaar via uw browser op: http://localhost:5002
+
+---
+
+## Projectstructuur
+
+```
+project/
+├── app.py               # Flask webapplicatie
+├── backend.py           # Pipeline-logica (Minimap2, SAMtools, BCFtools)
+├── templates/
+│   ├── header.html      # Gedeelde header en navigatie
+│   ├── web.html         # Analysepagina
+│   ├── Info_pagina.html # Informatiepagina
+│   ├── tools_info.html  # Uitleg over de gebruikte tools
+│   └── reference.html   # Referentiegenoom-links
+├── static/
+│   └── stylesheet.css   # Opmaak
+└── Data/
+    ├── ERR2165898.fastq
+    └── reference/
+        └── *.fna
+```
+
+---
+
+## Gebruik
+
+1. Open de browser en ga naar http://localhost:5002
+2. Vul optioneel een chromosoom, startpunt en eindpunt in om een specifiek regio te analyseren
+3. Kies de gewenste resultaten:
+   - Tabel met SNP's
+   - Plot van mutaties per positie
+   - Plot van mutaties per chromosoom
+4. Klik op **Start Analyse**
+
+De analyse produceert de volgende tussenbestanden in de projectmap:
+
+| Bestand | Beschrijving |
+|---------|--------------|
+| `output.sam` | Alignment-uitvoer van Minimap2 |
+| `output.bam` | Gecomprimeerde versie van het SAM-bestand |
+| `sorted_output.bam` | Gesorteerd BAM-bestand |
+| `sorted_output.bam.bai` | Index van het BAM-bestand |
+| `bcftools_mpileup.bcf` | Mpileup-uitvoer |
+| `output.vcf` | Gefilterde varianten (QUAL ≥ 30) |
+
+---
+
+## Problemen oplossen
+
+Als u problemen heeft met het runnen van van de website of eventuele erorrs die u tegenkomt, kunt u mailen naar l.bos.05@st.hanze.nl, adventa.christophany.rembet@st.hanze.nl of jrj.peterse@st.hanze.nl

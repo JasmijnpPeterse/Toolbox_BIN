@@ -7,9 +7,10 @@
             <h1>input</h1>
              <form action="web.html" method="POST" enctype="multipart/form-data">
                  <p class="ïnput_output">Wilt u een specifiek gen bekijken?</p>
-                 <p>Zo ja vul hieronder het start en het eindpunt in, zo niet laat leeg</p>
-                 <input type="text" name="startpunt">
-                 <input type="text" name="eindpunt">
+                 <p>Zo ja vul hieronder het chromosoom, start en het eindpunt in, zo niet laat leeg</p>
+                 <input type="text" name="chromosoom" placeholder ="Vul hier je chromosoom naam in.">
+                 <input type="text" name="startpunt" placeholder ="startpunt">
+                 <input type="text" name="eindpunt" placeholder = "eindpunt">
 
                  <p class="input_output">Wat wilt u als resultaat?</p>
 
@@ -17,10 +18,8 @@
                  <label for="plot_snps">Een tabel met al de snp's </label><br>
                  <input name="plot_mutaties" type="checkbox" id="mutations" value="mutations">
                  <label for="mutations">Een plot met de mutaties die vaker voorkomen</label><br>
-                 <input name="kwaliteitscore" type="checkbox" id="qualityscore" value="qualityscore">
-                 <label for="qualityscore">Een kwaliteitsscore</label><br>
-                 <input name="vcf_doc" type="checkbox" id="vcf_file" value="vcf_file">
-                 <label for="vcf_file">A vcf document met alle snp's en hun data</label><br>
+                 <input name="plot_chroms" type="checkbox" id="chroms" value="chroms">
+                 <label for="chroms">Een plot van de hoeveelheid mutaties per chromosoom</label><br>
 
                  <br>
                 <button type="submit" class="button btn_submit">Start Analyse</button>
@@ -32,41 +31,54 @@
                 <h1>Het Resultaat</h1>
                 <p>Hieronder is het voorbeeld van het resultaat met de gedetecteerde mutaties en de bijhorende mapping data.</p>
 
+                {% if region_error %}
+                    <p style="color: red;">{{ region_error }}</p>
+                {% endif %}
+
                 <div class="resultaat">
 
                 {% if show_results %}
-                     <p>{{ uitslag.status }}</p>
+                    <p>Analyse voltooid.</p>
                 {% endif %}
 
                 {% if tabel_snps %}
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Positie</th>
-                                <th>REF</th>
-                                <th>ALT</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>(1000)</td>
-                                <td>(A)</td>
-                                <td>(T)</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    {% if region_error_snp %}
+                        <p class="geen_mutaties">{{ region_error_snp }}</p>
+                    {% else %}
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Positie</th>
+                                    <th>REF</th>
+                                    <th>ALT</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for positie, waarden in snps_tabel_info.items() %}
+                                    <tr>
+                                        <td>{{ positie }}</td>
+                                        <td>{{ waarden[0] }}</td>
+                                        <td>{{ waarden[1] }}</td>
+                                    </tr>
+                                    {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
                 {% endif %}
 
                 {% if plot_mutaties %}
-                    <p>Mutaties plot hier...</p>
+                    {% if region_error_mutation %}
+                        <p class="geen_mutaties">{{ region_error_mutation }}</p>
+                    {% else %}
+                        <img src="data:image/png;base64,{{ mutatie_fig }}" alt="Mutaties plot">
+                    {% endif %}
                 {% endif %}
-
-                {% if kwaliteitscore %}
-                    <p>Kwaliteitsscore: 42 Q</p>
-                {% endif %}
-
-                {% if vcf_doc %}
-                    <p>Download VCF bestand...</p>
+                {% if chroms %}
+                    {% if region_error_chroms %}
+                        <p class="geen_mutaties">{{ region_error_chroms }}</p>
+                    {% else %}
+                        <img src="data:image/png;base64,{{ chroms_fig }}" alt="Chromosomen plot">
+                    {% endif %}
                 {% endif %}
 
                 {% if download_pad %}

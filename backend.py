@@ -1,143 +1,131 @@
+"""
+Bio-informatica nanopore sequencing analuse
+
+Autors: Lucas Bos, Jasmijn Peterse, Vani Rembet
+Version: 1.0
+Date: 30/03 - 10/04
+"""
+from io import BytesIO
+import base64
 import subprocess
-import time
-
-class Tools():
-    pass
+import matplotlib.pyplot as plt
 
 
-def main(kwargs):
-    print(kwargs)
-    print(kwargs["threads"])
-    print(kwargs["fastq_bestand"])
-    time.sleep(1)
+class Tool:
+    """
+    Class om tools aan te maken
+    """
+    def __init__(self, tool, **configs):
+        """
+        __innit__ laat de gebruiker de naam van de tool + meerdere configuraties invullen
+        """
+        self.tool = tool
+        self.configs = configs
 
-    subprocess.run(
-        f"minimap2 -a -x map-ont -t {kwargs['threads']} -N {kwargs['N']} {kwargs['reference']} {kwargs['fastq_bestand']} > output.sam",
-        shell=True
-    )
+    def __str__(self):
+        return f"Tool: {self.tool}, configs: {self.configs}"
 
-    print("Minimap2")
+    def run(self, cmd):
+        """
+        Zorgt ervoor dat de tool in de terminal wordt gerunned
+        """
+        subprocess.run(f"{self.tool} {cmd}", shell=True)
 
-    subprocess.run(
-        "samtools view -b -o output.bam output.sam",
-        shell=True
-    )
 
-    subprocess.run(
-        "samtools sort output.bam > sorted_output.bam",
-        shell=True
-    )
+def run(kwargs):
+    """
+    maakt tools aan en runt ze in de terminal
+    """
+    minimap2 = Tool("minimap2", threads=kwargs["threads"], N=kwargs["N"], reference=kwargs["reference"], fastq=kwargs["fastq_bestand"])
+    samtools = Tool("samtools")
+    bcftools = Tool("bcftools", reference=kwargs["reference"], region=kwargs.get("region"))
 
-    subprocess.run(
-        "samtools index sorted_output.bam",
-        shell=True
-    )
+    minimap2.run(f"-a -x map-ont -t {minimap2.configs['threads']} -N {minimap2.configs['N']} {minimap2.configs['reference']} {minimap2.configs['fastq']} > output.sam")
 
-    mpileup_cmd = f"bcftools mpileup sorted_output.bam -f {kwargs['reference']}"
+    samtools.run("view -b -o output.bam output.sam")
+    samtools.run("sort output.bam > sorted_output.bam")
+    samtools.run("index sorted_output.bam")
 
-    if kwargs.get("region"):
-        mpileup_cmd += f" -r {kwargs['region']}"
-
+    mpileup_cmd = f"mpileup sorted_output.bam -f {bcftools.configs['reference']}"
+    if bcftools.configs.get("region"):
+        mpileup_cmd += f" -r {bcftools.configs['region']}"
     mpileup_cmd += " > bcftools_mpileup.bcf"
 
-    subprocess.run(
-        mpileup_cmd,
-        shell=True
-    )
+    bcftools.run(mpileup_cmd)
+    bcftools.run("call -m -O v -o output.vcf bcftools_mpileup.bcf| bcftools filter -i 'QUAL>=30' -o output.vcf")
 
-    subprocess.run(
-        "bcftools call -m -O v -o output.vcf bcftools_mpileup.bcf",
-        shell=True
-    )
+def lezen_vcf():
+    """
+    Functie voor het inlezen van het output vcf file
 
-    subprocess.run(
-        "bcftools filter -i 'QUAL>=30' output.vcf -o bcftools_filter.bcf",
-        shell=True
-    )
-
-    print(f"done!")
-
-
-"""
-dit hieronder is voor het later aanroepen van de code thx oscar papito
-kwargs = {
-    "fastq_bestand": "/homes/lbos5/ERR2165898.fastq",
-    "reference": "/homes/lbos5/Downloads/reference/ncbi_dataset/data/GCF_000006945.2/GCF_000006945.2_ASM694v2_genomic.fna",
-    "threads": 8,
-    "N": 5
-}
-
-main(kwargs)
-
-dit hieronder is voor het later aanroepen van de code thx oscar papito
-
-"""
-
-#backendv.py
-
-class Tools():
-    def __init__(self, chrom, pos, ref, alt, qual):
-        self.chrom = chrom
-        self.pos = pos
-        self.ref = ref
-        self.alt = alt
-        self.qual = float(qual)
-
-def vcf_naar_lijst(vcf_bestand):
-    with open(vcf_bestand, 'r') as vcf:
-        lijst = []
-        for line in vcf:
-            if line.startswith('#'):
+    :return: mutaties(dict), snps_tabel_info(dict), chroms(dict)
+    """
+    mutaties = {}
+    snps_tabel_info = {}
+    chroms = {}
+    with open("output.vcf", "r", encoding="utf-8") as f:
+        for line in f:
+            splitline = line.strip().split("\t")
+            if line.startswith("#"):
                 continue
-            regel = line.strip().split('\t')
-            mutatie = Tools(
-                chrom = regel[0],
-                pos = regel[1],
-                ref = regel[3],
-                alt = regel[4],
-                qual = regel[5]
-            )
-            lijst.append(mutatie)
-    return lijst
+            if splitline[4] and splitline[4] != ".":
+                pos = splitline[1]
+                chrom = splitline[0]
+                mutaties[pos] = mutaties.get(pos, 0) + 1
+                chroms[chrom] = chroms.get(chrom, 0) + 1
+                snps_tabel_info[pos] = [splitline[3], splitline[4]]
+    return mutaties, snps_tabel_info, chroms
 
-def relevante_mutatie(self):
-    return self.qual >= 30
+class Plot:
+    """
+    Class voor het maken van een plot
+    """
+    def __init__(self, mutaties):
+        """
+        Initialiseert het object met een lijst van mutaties.
 
-def filter_mutaties(mutatie_lijst):
-    relevante_mutaties = []
-    ruis = []
-    for mutatie in mutatie_lijst:
-        if mutatie.relevante_mutatie():
-            relevante_mutaties.append(mutatie)
-        else:
-            ruis.append(mutatie)
-    return relevante_mutaties, ruis
+        :param mutaties: (list) lijst van mutaties
+        """
+        self.mutaties = mutaties
 
-def aantal_mutaties(aantal_mut_lijst):
-    locatie_bijhouden = {}
-    frequentie = []
+    def __str__(self):
+        """
+        Geeft een leesbare string representatie van het object.
 
-    for (chrom, pos), count in locatie_bijhouden.items():
-        locatie_data = {
-            'chrom': chrom,
-            'pos': pos,
-            'frequentie': count,
-        }
-        frequentie.append(locatie_data)
-
-    return frequentie
+        :return: (str) string met de mutaties
+        """
+        return f"Mutaties is dit:{self.mutaties}"
 
 
-def main():
-    mutatie_obj = vcf_naar_lijst("out.vcf")
-    print(f"Mutatie gevonden: {len(mutatie_obj)}")
+    def maken(self):
+        """
+        Functie voor het maken van het plot
+        :return: Object(plot)
+        """
+        fig, ax = plt.subplots()
 
-    nodige_mutatie, onnodige_mutatie = filter_mutaties(mutatie_obj)
-    print(f"Relevante mutatie: {len(nodige_mutatie)}")
-    print(f"Ruis mutatie: {len(onnodige_mutatie)}")
+        keys = list(self.mutaties.keys())
+        values = list(self.mutaties.values())
 
-    mutatie_frq = aantal_mutaties(mutatie_obj)
-    print(f"Mutatie frequntie: {len(mutatie_frq)}")
+        ax.bar(keys, values)
+        ax.set_xticks(range(len(keys)))
+        ax.set_xticklabels(keys, rotation=90)
 
-main()
+        ax.set_ylabel("Mutaties")
+        ax.set_title("Mutaties in reads")
+        fig.tight_layout()
 
+        return self.opslaan_plot(fig)
+
+
+    def opslaan_plot(self, fig):
+        """
+        Functie voor het opslaan van het plot
+        :return website_png(str) string met base64 karakters van de plot
+        """
+        pltfile = BytesIO()
+        plt.savefig(pltfile, format="png")
+        pltfile.seek(0)  # rewind to beginning of file
+        website_png = base64.b64encode(pltfile.getvalue()).decode("ascii")
+
+        return website_png
