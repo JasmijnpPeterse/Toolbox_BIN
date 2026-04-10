@@ -1,5 +1,5 @@
 """
-Bio-informatica nanopore sequencing analuse
+Bio-informatica nanopore sequencing analyse
 
 Autors: Lucas Bos, Jasmijn Peterse, Vani Rembet
 Version: 1.0
