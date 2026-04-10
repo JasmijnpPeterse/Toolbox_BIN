@@ -111,6 +111,7 @@ class Plot:
         ax.set_xticks(range(len(keys)))
         ax.set_xticklabels(keys, rotation=90)
 
+        ax.set_xlabel("Positie in genoom")
         ax.set_ylabel("Mutaties")
         ax.set_title("Mutaties in reads")
         fig.tight_layout()
